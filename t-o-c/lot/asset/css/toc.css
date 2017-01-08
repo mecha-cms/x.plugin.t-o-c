@@ -1,0 +1,66 @@
+.toc {margin:1rem 0 0}
+.toc-header h3 {
+  font-size:100%;
+  color:inherit;
+  margin:0 0 .4em .2em;
+  padding:0;
+}
+.toc-a {
+  visibility:hidden;
+  font:inherit;
+  font-weight:normal;
+}
+.toc-a:before {content:'\25C2'}
+.toc-stage .toc-a:before {content:'\25B4'}
+.toc-point .toc-a:before {content:'\00A7'}
+.toc-stage:target:before,
+.toc-point:target:before {
+  content:"";
+  display:block;
+  height:1rem;
+  margin-top:-.5rem;
+}
+.toc ol {
+  list-style:none;
+  margin:.2em 0 0 1.2em; /* indent */
+  padding:0;
+  overflow:hidden;
+}
+.toc li {
+  margin:0;
+  padding:0 0 0 1.4em; /* indent + .2em */
+  position:relative;
+}
+.toc ol ol {margin:0 0 0 .2em}
+.toc li:before {
+  content:"";
+  display:block;
+  width:0;
+  height:999em;
+  border-left:1px solid;
+  position:absolute;
+  bottom:.7em;
+  left:0;
+  margin-bottom:-1px;
+}
+.toc li:after {
+  content:"";
+  display:block;
+  width:1em; /* indent - .2em */
+  border-top:1px solid;
+  position:absolute;
+  top:.7em;
+  bottom:0;
+  left:0;
+  background:#fff; /* same with page background */
+}
+.toc li:target > .toc-a,
+.toc li a:hover + .toc-a,
+.toc-stage:hover .toc-a,
+.toc-stage:target .toc-a,
+.toc-stage:hover .toc-a,
+.toc-stage:target .toc-a,
+.toc-point:hover .toc-a,
+.toc-point:target .toc-a,
+.toc-point:hover .toc-a,
+.toc-point:target .toc-a {visibility:visible}
