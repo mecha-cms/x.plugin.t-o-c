@@ -59,7 +59,7 @@ function fn_toc_set($content) {
         $toc = '<div class="' . $class[0] . '" id="' . __replace__($id[0], ['id' => $toc_id]) . '"><div class="' . $class[0] . '-header"><h3>' . $language->toc . '</h3></div><div class="' . $class[0] . '-body">' . $toc . '</div></div>';
         $i = 0;
         $dupe = [];
-        $content = preg_replace_callback($pattern, function($lot) use($language, $type, $id, $class, $toc_id, &$i, &$dupe) {
+        $content = preg_replace_callback($pattern, function($lot) use($language, $type, $id, $class, $class_x, $toc_id, &$i, &$dupe) {
             if (strpos($lot[2], $class_x) === false) {
                 ++$i;
                 if (strpos($lot[2], ' class="') === false) {
