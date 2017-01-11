@@ -2,7 +2,7 @@
 title: Table of Content
 description: Generate table of content automatically.
 author: Taufik Nurrohman
-version: 2.0.1
+version: 2.0.2
 ...
 
 This plugin will automatically create table of content within the page content that has several headers so that you can use it to navigate between page headers. If you set the `type` value to `2`, then the table of content will not be inserted into the page content, and this plugin will only serves as an automatic permanent link ID generator of headers in your page content.

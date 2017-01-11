@@ -1,8 +1,13 @@
 <?php
 
-function fn_toc_set($content) {
-    // no header(s), skip anyway …
-    if (stripos($content, '</h') === false) {
+function fn_toc($content, $lot) {
+    global $site;
+    // No header(s), skip anyway …
+    if (!$content || $site->type === 'pages' || stripos($content, '</h') === false) {
+        return $content;
+    }
+    // Disabled by the `toc` field, skip …
+    if (isset($lot['toc']) && !$lot['toc']) {
         return $content;
     }
     Config::set('toc_id', Config::get('toc_id', 0) + 1);
@@ -39,7 +44,7 @@ function fn_toc_set($content) {
                 }
                 $title = w($lot[3][$i], $v);
                 $slug = h($title);
-                // append unique number to header ID if it is already exists
+                // Append unique number to header ID if it is already exists
                 if (isset($dupe[$slug])) {
                     ++$dupe[$slug];
                 } else {
@@ -77,7 +82,7 @@ function fn_toc_set($content) {
                         $mark = '<a class="' . $class[3] . '" href="#' . $s[1] . '"></a>';
                     } else {
                         $slug = h($lot[3]);
-                        // append unique number to header ID if it is already exists
+                        // Append unique number to header ID if it is already exists
                         if (isset($dupe[$slug])) {
                             ++$dupe[$slug];
                         } else {
@@ -94,14 +99,6 @@ function fn_toc_set($content) {
     }
 }
 
-function fn_toc($data) {
-    global $site;
-    if ($site->type === 'page' && !empty($data['content']) && (!isset($data['toc']) || $data['toc'])) {
-        $data['content'] = fn_toc_set($data['content']);
-    }
-    return $data;
-}
-
-Hook::set('page.output', 'fn_toc');
+Hook::set('page.content', 'fn_toc');
 
 Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'toc.min.css');
