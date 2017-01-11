@@ -43,17 +43,17 @@ function fn_toc($content, $lot) {
                     $toc .= '</li>';
                 }
                 $title = w($lot[3][$i], $v);
-                $slug = h($title);
-                // Append unique number to header ID if it is already exists
-                if (isset($dupe[$slug])) {
-                    ++$dupe[$slug];
-                } else {
-                    $dupe[$slug] = 0;
-                }
                 $toc .= '<li id="' . __replace__($id[3], ['id' => $toc_id . '-' . ($i + 1)]) . '">';
                 if (stripos($lot[0][$i], ' id="') !== false && preg_match('#\bid="(.*?)"#i', $lot[0][$i], $s)) {
-                    $toc .= '<a href="#' . __replace__($id[$type], ['id' => $s[1]]) . '">';
+                    $toc .= '<a href="#' . $s[1] . '">';
                 } else {
+                    $slug = h($title);
+                    // Append unique number to header ID if it is already exists
+                    if (isset($dupe[$slug])) {
+                        ++$dupe[$slug];
+                    } else {
+                        $dupe[$slug] = 0;
+                    }
                     $toc .= '<a href="#' . __replace__($id[$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '">';
                 }
                 $toc .= $title . '</a>&#x00A0;<span class="' . $class[3] . '"></span>';
