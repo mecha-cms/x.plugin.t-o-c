@@ -6,6 +6,8 @@ function fn_toc($content, $lot) {
     if (!$content || $site->type === 'pages' || stripos($content, '</h') === false) {
         return $content;
     }
+    // Add CSS file only if needed
+    Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'toc.min.css', 11);
     // Disabled by the `toc` field, skip …
     if (isset($lot['toc']) && !$lot['toc']) {
         return $content;
@@ -100,5 +102,3 @@ function fn_toc($content, $lot) {
 }
 
 Hook::set('page.content', 'fn_toc');
-
-Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'toc.min.css');
