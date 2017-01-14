@@ -1,7 +1,7 @@
 <?php
 
-// `1`: automatic table of content and section ID
-// `2`: automatic section ID
+// 1: automatic table of content and section ID
+// 2: automatic section ID
 
 return [
     'type' => 1,
