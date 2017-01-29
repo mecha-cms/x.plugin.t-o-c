@@ -2,13 +2,13 @@
 
 function fn_toc($content, $lot) {
     global $site;
-    // No header(s), skip anyway …
+    // No header(s), skip anyway…
     if (!$content || $site->type === 'pages' || stripos($content, '</h') === false) {
         return $content;
     }
     // Add CSS file only if needed
     Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'toc.min.css', 11);
-    // Disabled by the `toc` field, skip …
+    // Disabled by the `toc` field, skip…
     if (isset($lot['toc']) && !$lot['toc']) {
         return $content;
     }
