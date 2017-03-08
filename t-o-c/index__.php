@@ -3,7 +3,7 @@
 function fn_toc($content, $lot) {
     global $site;
     // No header(s), skip anyway…
-    if (!$content || $site->type === 'pages' || stripos($content, '</h') === false) {
+    if (!$content || $site->is === 'pages' || stripos($content, '</h') === false) {
         return $content;
     }
     // Add CSS file only if needed
