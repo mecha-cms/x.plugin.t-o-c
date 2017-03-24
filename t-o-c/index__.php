@@ -1,17 +1,22 @@
 <?php
 
 function fn_toc($content, $lot) {
-    global $site;
+    global $site, $url;
     // No header(s), skip anyway…
     if (!$content || $site->is === 'pages' || stripos($content, '</h') === false) {
         return $content;
     }
-    // Add CSS file only if needed
-    Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'toc.min.css', 11);
-    // Disabled by the `toc` field, skip…
-    if (isset($lot['toc']) && !$lot['toc']) {
+    // Disabled by the `toc` field from the global `$site->page` data, skip…
+    if (isset($site->page->toc) && !$site->page->toc) {
         return $content;
     }
+    // Disabled by the `toc` field, skip…
+    $data = PAGE . DS . $url->path . DS . 'toc.data';
+    if (isset($lot['toc']) && !$lot['toc'] || file_exists($data) && !e(file_get_contents($data))) {
+        return $content;
+    }
+    // Add CSS file only if needed
+    Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'toc.min.css', 11);
     Config::set('toc_id', Config::get('toc_id', 0) + 1);
     global $language;
     $state = Plugin::state(__DIR__);
