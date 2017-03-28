@@ -1,6 +1,6 @@
 <?php
 
-function fn_toc($content, $lot) {
+function fn_toc_replace_toc($content, $lot) {
     global $site, $url;
     // No header(s), skip anyway…
     if (!$content || $site->is === 'pages' || stripos($content, '</h') === false) {
@@ -106,4 +106,4 @@ function fn_toc($content, $lot) {
     }
 }
 
-Hook::set('page.content', 'fn_toc');
+Hook::set('page.content', 'fn_toc_replace_toc', 10);
