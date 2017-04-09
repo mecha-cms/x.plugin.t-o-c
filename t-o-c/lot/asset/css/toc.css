@@ -2,7 +2,7 @@
 .toc-header h3 {
   font-size:100%;
   color:inherit;
-  margin:0 0 .4em .2em;
+  margin:0 0 .4em 0;
   padding:0;
 }
 .toc-a {
@@ -11,10 +11,10 @@
   font-weight:normal;
 }
 .toc-a:before {content:'\25C2'}
-.toc-stage .toc-a:before {content:'\25B4'}
 .toc-point .toc-a:before {content:'\00A7'}
-.toc-stage:target:before,
-.toc-point:target:before {
+.toc-stage .toc-a:before {content:'\25B4'}
+.toc-point:target:before,
+.toc-stage:target:before {
   content:"";
   display:block;
   height:1rem;
@@ -36,12 +36,11 @@
   content:"";
   display:block;
   width:0;
-  height:999em;
   border-left:1px solid;
   position:absolute;
-  bottom:.7em;
+	top:0;
+  bottom:0;
   left:0;
-  margin-bottom:-1px;
 }
 .toc li:after {
   content:"";
@@ -52,8 +51,8 @@
   top:.7em;
   bottom:0;
   left:0;
-  background:#fff; /* same with page background */
 }
+.toc li:last-child:after {background-color:#fff} /* same with page background */
 .toc li:target > .toc-a,
 .toc li a:hover + .toc-a,
 .toc-stage:hover .toc-a,
