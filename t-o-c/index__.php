@@ -1,6 +1,6 @@
 <?php
 
-function fn_toc($content, $lot) {
+function fn_toc($content, $lot = [], $that = null) {
     global $site, $url;
     // No header(s), skip anyway…
     if (!$content || $site->is === 'pages' || stripos($content, '</h') === false) {
@@ -11,8 +11,7 @@ function fn_toc($content, $lot) {
         return $content;
     }
     // Disabled by the `toc` field, skip…
-    $data = PAGE . DS . $url->path . DS . 'toc.data';
-    if (isset($lot['toc']) && !$lot['toc'] || file_exists($data) && !e(file_get_contents($data))) {
+    if (isset($that->toc) && !$that->toc) {
         return $content;
     }
     // Add CSS file only if needed
@@ -107,3 +106,5 @@ function fn_toc($content, $lot) {
 }
 
 Hook::set('page.content', 'fn_toc', 10);
+
+// TODO: Make `block` extension optional!
