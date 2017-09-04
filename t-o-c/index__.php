@@ -11,7 +11,7 @@ function fn_toc($content, $lot = [], $that = null) {
         return $content;
     }
     // Disabled by the `toc` field, skip…
-    if (isset($that->toc) && !$that->toc) {
+    if (isset($lot['toc']) && !$lot['toc'] || isset($that->toc) && !$that->toc) {
         return $content;
     }
     // Add CSS file only if needed
