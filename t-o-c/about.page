@@ -8,7 +8,6 @@ version: 2.1.0
 dependency:
   extension:
     - asset
-    - block
 ...
 
 This plugin will automatically create table of content within the page content that has several headers so that you can use it to navigate between page headers. If you set the `type` value to `2`, then the table of content will not be inserted into the page content, and this plugin will only serve as an automatic permanent link ID generator of headers in your page content.
@@ -43,7 +42,24 @@ Add a `not-toc-stage` or `not-toc-point` class to the desired headers to exclude
 
 #### Custom Placement
 
-Add a `[‌[‌toc‌]‌]` block anywhere in the page content to mark the position you want to put the generated TOC tree to.
+If you have the _Block_ extension installed, you can put `[‌[‌toc‌]‌]` block anywhere in the page content to mark the position you want to put the generated TOC tree to.
+
+~~~ .yaml
+---
+title: Page Title
+description: Page description.
+author: Taufik Nurrohman
+type: HTML
+...
+
+First paragraph goes here.
+
+[‌[‌toc title="Custom Title"‌]‌]
+
+Second paragraph goes here.
+
+Third paragraph goes here.
+~~~
 
 #### Disable TOC
 
@@ -58,12 +74,6 @@ type: HTML
 toc: false
 ...
 ~~~
-
-### Dependency
-
-#### Extension
-
- - Blocks
 
  *[TOC]: Table of Content
 
