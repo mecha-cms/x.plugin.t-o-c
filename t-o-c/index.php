@@ -63,7 +63,7 @@ function toc(string $content = "", array $lot = []) {
                     $toc .= '</li>';
                 }
                 $title = \w($lot[3][$i], $v);
-                $toc .= '<li id="' . \replace($id[3], ['id' => $toc_id . '-' . ($i + 1)]) . '">';
+                $toc .= '<li id="' . \candy($id[3], ['id' => $toc_id . '-' . ($i + 1)]) . '">';
                 if (stripos($lot[0][$i], ' id="') !== false && preg_match('#\bid="(.*?)"#i', $lot[0][$i], $s)) {
                     $toc .= '<a href="#' . $s[1] . '">';
                 } else {
@@ -74,14 +74,14 @@ function toc(string $content = "", array $lot = []) {
                     } else {
                         $dupe[$slug] = 0;
                     }
-                    $toc .= '<a href="#' . \replace($id[$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '">';
+                    $toc .= '<a href="#' . \candy($id[$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '">';
                 }
                 $toc .= $title . '</a>&#x00A0;<span class="' . $class[3] . '"></span>';
                 $depth = $level;
             }
         }
         $toc .= str_repeat('</li></ol>', $depth - ((int) $lot[1][0]) + 1);
-        $toc = '<div class="' . $class[0] . '" id="' . \replace($id[0], ['id' => $toc_id]) . '"><div class="' . $class[0] . '-header"><h3>' . X . '</h3></div><div class="' . $class[0] . '-body">' . $toc . '</div></div>';
+        $toc = '<div class="' . $class[0] . '" id="' . \candy($id[0], ['id' => $toc_id]) . '"><div class="' . $class[0] . '-header"><h3>' . X . '</h3></div><div class="' . $class[0] . '-body">' . $toc . '</div></div>';
         $i = 0;
         $dupe = [];
         $content = preg_replace_callback($pattern, function($lot) use($language, $type, $id, $class, $class_x, $toc_id, &$i, &$dupe) {
@@ -93,10 +93,10 @@ function toc(string $content = "", array $lot = []) {
                     $attr = str_replace(' class="', ' class="' . $class[$type] . ' ', $lot[2]);
                 }
                 if (strpos($lot[2], ' id="') === false) {
-                    $attr .= ' id="' . \replace($id[$type], ['id' => \To::slug($lot[3])]) . '"';
+                    $attr .= ' id="' . \candy($id[$type], ['id' => \To::slug($lot[3])]) . '"';
                 }
                 if ($type === 1) {
-                    $mark = '<a class="' . $class[3] . '" href="#' . \replace($id[3], ['id' => $toc_id . '-' . $i]) . '"></a>';
+                    $mark = '<a class="' . $class[3] . '" href="#' . \candy($id[3], ['id' => $toc_id . '-' . $i]) . '"></a>';
                 } else if ($type === 2) {
                     if (strpos($lot[2], ' id="') !== false && preg_match('#\bid="(.*?)"#i', $lot[2], $s)) {
                         $mark = '<a class="' . $class[3] . '" href="#' . $s[1] . '"></a>';
@@ -108,7 +108,7 @@ function toc(string $content = "", array $lot = []) {
                         } else {
                             $dupe[$slug] = 0;
                         }
-                        $mark = '<a class="' . $class[3] . '" href="#' . \replace($id[$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '"></a>';
+                        $mark = '<a class="' . $class[3] . '" href="#' . \candy($id[$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '"></a>';
                     }
                 }
                 return '<h' . $lot[1] . $attr . '>' . $lot[3] . '&#x00A0;' . $mark . '</h' . $lot[1] . '>';
