@@ -1,13 +1,13 @@
 <?php
 
-// 1: automatic table of content and section ID
-// 2: automatic section ID
+// 1: Automatic TOC and section ID
+// 2: Automatic section ID only
 
 return [
-    'type' => 1,
+    'type' => 2,
     'toc' => [
         'id' => ['toc:%{id}%', 'stage:%{id}%', 'point:%{id}%', 'a:%{id}%'],
         'class' => ['toc', 'toc-stage', 'toc-point', 'toc-a'],
-        'class_x' => ["", 'not-toc-stage', 'not-toc-point']
+        'class/x' => ["", 'not-toc-stage', 'not-toc-point']
     ]
 ];

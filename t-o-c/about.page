@@ -3,7 +3,7 @@ title: Table of Content
 description: Generate table of content automatically.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.2.0
+version: 2.3.0
 
 dependency:
   extension:
@@ -14,7 +14,7 @@ This plugin will automatically create table of content within the page content t
 
 ### Usage
 
-Configuration data are available in `lot\extend\plugin\lot\asset\t-o-c\lot\state\config.php`.
+Configuration data are available in `.\lot\extend\plugin\lot\asset\t-o-c\lot\state\config.php`.
 
 #### Custom Header ID
 

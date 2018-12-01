@@ -2,6 +2,7 @@
 
 function toc(string $content = "", array $lot = []) {
     global $language, $site;
+    $block = \Extend::exist('block');
     if (
         // No content…
         !$content ||
@@ -13,7 +14,7 @@ function toc(string $content = "", array $lot = []) {
         stripos($content, '</h') === false
     ) {
         // Skip!
-        return $content;
+        return $block ? \Block::replace('toc', "", $content) : $content;
     }
     // Disabled by the `toc` field, skip…
     if ($this->toc !== null && !$this->toc) {
@@ -23,7 +24,7 @@ function toc(string $content = "", array $lot = []) {
     \Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'toc.min.css');
     \Config::set('_toc_id', \Config::get('_toc_id', 0) + 1);
     $state = \Plugin::state('t-o-c');
-    $pattern = '#<h([1-6])(\s.*?)?>([\s\S]*?)<\/h\1>#i';
+    $pattern = '#<h([1-6])(\s[^<>]*?)?>([\s\S]*?)</h\1>#i';
     $depth = $level = 0;
     $toc = "";
     $toc_id = \Config::get('_toc_id');
@@ -31,21 +32,21 @@ function toc(string $content = "", array $lot = []) {
     $id = $state['toc']['id'];
     $type = $state['type'];
     $class = $state['toc']['class'];
-    $class_x = $state['toc']['class_x'][$type];
-    if ($block = \Extend::exist('block')) {
+    $class_x = $state['toc']['class/x'][$type];
+    if ($block) {
         $union = \Extend::state('block', 'union');
         $open = $union[1][0][0]; // `[[`
         $close = $union[1][0][1]; // `]]`
-        $div = $union[1][0][2]; // `/`
-        $space = $union[1][1][3]; // ` `
+        $end = $union[1][0][2]; // `/`
+        $separator = $union[1][1][3]; // ` `
         if (
             $type === 1 &&
             // `[[toc]]`
             strpos($content, $open . 'toc' . $close) === false &&
             // `[[toc/]]`
-            strpos($content, $open . 'toc' . $div . $close) === false &&
+            strpos($content, $open . 'toc' . $end . $close) === false &&
             // `[[toc `
-            strpos($content, $open . 'toc' . $space) === false
+            strpos($content, $open . 'toc' . $separator) === false
         ) {
             $content = \Block::unite('toc', false, ['title' => $toc_title]) . "\n\n" . $content;
         }
@@ -116,9 +117,9 @@ function toc(string $content = "", array $lot = []) {
             return $lot[0];
         }, $content);
         return $block ? \Block::replace('toc', function($content, $attr) use($toc, $toc_title) {
-            return str_replace(X, !empty($attr['title']) ? $attr['title'] : $toc_title, $toc);
+            return str_replace(X, $attr['title'] ?? $toc_title, $toc);
         }, $content) : str_replace(X, $toc_title, $toc) . $content;
     }
 }
 
-\Hook::set('page.content', __NAMESPACE__ . '\toc', 10);
+\Hook::set('page.content', __NAMESPACE__ . "\\toc", 10);
