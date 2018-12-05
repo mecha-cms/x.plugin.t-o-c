@@ -4,7 +4,7 @@
 // 2: Automatic section ID only
 
 return [
-    'type' => 2,
+    'type' => 1,
     'toc' => [
         'id' => ['toc:%{id}%', 'stage:%{id}%', 'point:%{id}%', 'a:%{id}%'],
         'class' => ['toc', 'toc-stage', 'toc-point', 'toc-a'],
