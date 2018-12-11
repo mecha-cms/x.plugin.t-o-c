@@ -1,15 +1,15 @@
 <?php namespace fn;
 
 function toc(string $content = "", array $lot = []) {
-    global $language, $site;
+    global $config, $language;
     $block = \Extend::exist('block');
     if (
         // No content…
         !$content ||
         // Is error page…
-        $site->is('error') ||
+        $config->is('error') ||
         // Is in page(s) view…
-        $site->is('pages') ||
+        $config->is('pages') ||
         // No header(s)…
         stripos($content, '</h') === false
     ) {
