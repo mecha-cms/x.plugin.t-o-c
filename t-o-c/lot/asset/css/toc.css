@@ -52,7 +52,7 @@
   bottom:0;
   left:0;
 }
-.toc li:last-child:after {background-color:#fff} /* same with page background */
+.toc li:last-child:after {background:var(--color--inverse,#fff)} /* same with page background */
 .toc li:target > .toc-a,
 .toc li a:hover + .toc-a,
 .toc-stage:hover .toc-a,

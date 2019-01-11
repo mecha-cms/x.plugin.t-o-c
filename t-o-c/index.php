@@ -21,7 +21,7 @@ function toc(string $content = "", array $lot = []) {
         return $content;
     }
     // Add the CSS file only if needed
-    \Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'toc.min.css');
+    \Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 'toc.min.css', 20.1);
     \Config::set('_toc_id', \Config::get('_toc_id', 0) + 1);
     $state = \Plugin::state('t-o-c');
     $pattern = '#<h([1-6])(\s[^<>]*?)?>([\s\S]*?)</h\1>#i';
