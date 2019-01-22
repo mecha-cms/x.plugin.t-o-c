@@ -11,7 +11,7 @@ function toc(string $content = "", array $lot = []) {
         // Is in page(s) view…
         $config->is('pages') ||
         // No header(s)…
-        stripos($content, '</h') === false
+        \stripos($content, '</h') === false
     ) {
         // Skip!
         return $block ? \Block::replace('toc', "", $content) : $content;
@@ -42,30 +42,30 @@ function toc(string $content = "", array $lot = []) {
         if (
             $type === 1 &&
             // `[[toc]]`
-            strpos($content, $open . 'toc' . $close) === false &&
+            \strpos($content, $open . 'toc' . $close) === false &&
             // `[[toc/]]`
-            strpos($content, $open . 'toc' . $end . $close) === false &&
+            \strpos($content, $open . 'toc' . $end . $close) === false &&
             // `[[toc `
-            strpos($content, $open . 'toc' . $separator) === false
+            \strpos($content, $open . 'toc' . $separator) === false
         ) {
             $content = \Block::unite('toc', false, ['title' => $toc_title]) . "\n\n" . $content;
         }
     }
-    $v = explode(',', trim(str_replace(',a,', "", ',' . HTML_WISE_I . ','), ','));
+    $v = \explode(',', \trim(\str_replace(',a,', "", ',' . HTML_WISE_I . ','), ','));
     $dupe = [];
-    if (preg_match_all($pattern, $content, $lot)) {
-        for ($i = 0, $count = count($lot[0]); $i < $count; ++$i) {
+    if (\preg_match_all($pattern, $content, $lot)) {
+        for ($i = 0, $count = \count($lot[0]); $i < $count; ++$i) {
             $level = (int) $lot[1][$i];
-            if (strpos($lot[0][$i], $class_x) === false) {
+            if (\strpos($lot[0][$i], $class_x) === false) {
                 if ($level > $depth) {
                     $toc .= '<ol>';
                 } else {
-                    $toc .= str_repeat('</li></ol>', $depth - $level);
+                    $toc .= \str_repeat('</li></ol>', $depth - $level);
                     $toc .= '</li>';
                 }
                 $title = \w($lot[3][$i], $v);
                 $toc .= '<li id="' . \candy($id[3], ['id' => $toc_id . '-' . ($i + 1)]) . '">';
-                if (stripos($lot[0][$i], ' id="') !== false && preg_match('#\bid="(.*?)"#i', $lot[0][$i], $s)) {
+                if (\stripos($lot[0][$i], ' id="') !== false && \preg_match('#\bid="(.*?)"#i', $lot[0][$i], $s)) {
                     $toc .= '<a href="#' . $s[1] . '">';
                 } else {
                     $slug = \To::slug($title);
@@ -81,25 +81,25 @@ function toc(string $content = "", array $lot = []) {
                 $depth = $level;
             }
         }
-        $toc .= str_repeat('</li></ol>', $depth - ((int) $lot[1][0]) + 1);
+        $toc .= \str_repeat('</li></ol>', $depth - ((int) $lot[1][0]) + 1);
         $toc = '<div class="' . $class[0] . '" id="' . \candy($id[0], ['id' => $toc_id]) . '"><div class="' . $class[0] . '-header"><h3>' . X . '</h3></div><div class="' . $class[0] . '-body">' . $toc . '</div></div>';
         $i = 0;
         $dupe = [];
-        $content = preg_replace_callback($pattern, function($lot) use($language, $type, $id, $class, $class_x, $toc_id, &$i, &$dupe) {
-            if (strpos($lot[2], $class_x) === false) {
+        $content = \preg_replace_callback($pattern, function($lot) use($language, $type, $id, $class, $class_x, $toc_id, &$i, &$dupe) {
+            if (\strpos($lot[2], $class_x) === false) {
                 ++$i;
-                if (strpos($lot[2], ' class="') === false) {
+                if (\strpos($lot[2], ' class="') === false) {
                     $attr = ' class="' . $class[$type] . '"' . $lot[2];
                 } else {
-                    $attr = str_replace(' class="', ' class="' . $class[$type] . ' ', $lot[2]);
+                    $attr = \str_replace(' class="', ' class="' . $class[$type] . ' ', $lot[2]);
                 }
-                if (strpos($lot[2], ' id="') === false) {
+                if (\strpos($lot[2], ' id="') === false) {
                     $attr .= ' id="' . \candy($id[$type], ['id' => \To::slug($lot[3])]) . '"';
                 }
                 if ($type === 1) {
                     $mark = '<a class="' . $class[3] . '" href="#' . \candy($id[3], ['id' => $toc_id . '-' . $i]) . '"></a>';
                 } else if ($type === 2) {
-                    if (strpos($lot[2], ' id="') !== false && preg_match('#\bid="(.*?)"#i', $lot[2], $s)) {
+                    if (\strpos($lot[2], ' id="') !== false && \preg_match('#\bid="(.*?)"#i', $lot[2], $s)) {
                         $mark = '<a class="' . $class[3] . '" href="#' . $s[1] . '"></a>';
                     } else {
                         $slug = \To::slug($lot[3]);
@@ -117,8 +117,8 @@ function toc(string $content = "", array $lot = []) {
             return $lot[0];
         }, $content);
         return $block ? \Block::replace('toc', function($content, $attr) use($toc, $toc_title) {
-            return str_replace(X, $attr['title'] ?? $toc_title, $toc);
-        }, $content) : str_replace(X, $toc_title, $toc) . $content;
+            return \str_replace(X, $attr['title'] ?? $toc_title, $toc);
+        }, $content) : \str_replace(X, $toc_title, $toc) . $content;
     }
 }
 
