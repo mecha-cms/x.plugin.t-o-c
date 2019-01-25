@@ -9,6 +9,15 @@
 
 return [
     'type' => 1,
-    'id' => ['t-o-c:%{id}%', 'stage:%{id}%', 'point:%{id}%', 'a:%{id}%'],
-    'class' => ['t-o-c', 't-o-c:stage', 't-o-c:point', 't-o-c:a', 'x:t-o-c']
+    'id' => [
+        0 => 't-o-c:%{id}%',
+        1 => ["", 'stage:%{id}%', 'point:%{id}%'],
+        2 => 'a:%{id}%'
+    ],
+    'class' => [
+        0 => 't-o-c',
+        1 => ["", 't-o-c:stage', 't-o-c:point'],
+        2 => 't-o-c:a',
+        3 => 'x:t-o-c'
+    ]
 ];

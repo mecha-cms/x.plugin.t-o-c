@@ -41,7 +41,6 @@ function t_o_c($content) {
     $out_title = \Language::get('t_o_c');
     $id = $state['id'];
     $class = $state['class'];
-    //$class_x = $state['class/x'][$type];
     if ($block) {
         $union = \Extend::state('block', 'union');
         $open = $union[1][0][0]; // `[[`
@@ -65,7 +64,7 @@ function t_o_c($content) {
     if (\preg_match_all($pattern, $content, $m)) {
         for ($i = 0, $count = \count($m[0]); $i < $count; ++$i) {
             $level = (int) $m[1][$i];
-            if (\strpos($m[0][$i], $class[4]) === false) {
+            if (\strpos($m[0][$i], $class[3]) === false) {
                 if ($level > $depth) {
                     $out .= '<ol>';
                 } else {
@@ -73,7 +72,7 @@ function t_o_c($content) {
                     $out .= '</li>';
                 }
                 $title = \w($m[3][$i], $v);
-                $out .= '<li id="' . \candy($id[3], ['id' => $out_id . '.' . ($i + 1)]) . '">';
+                $out .= '<li id="' . \candy($id[2], ['id' => $out_id . '.' . ($i + 1)]) . '">';
                 if (\stripos($m[0][$i], ' id="') !== false && \preg_match('#\bid="(.*?)"#i', $m[0][$i], $s)) {
                     $out .= '<a href="#' . $s[1] . '">';
                 } else {
@@ -84,9 +83,9 @@ function t_o_c($content) {
                     } else {
                         $dupe[$slug] = 0;
                     }
-                    $out .= '<a href="#' . \candy($id[$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '">';
+                    $out .= '<a href="#' . \candy($id[1][$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '">';
                 }
-                $out .= $title . '</a>&#x00A0;<span class="' . $class[3] . '"></span>';
+                $out .= $title . '</a>&#x00A0;<span class="' . $class[2] . '"></span>';
                 $depth = $level;
             }
         }
@@ -95,7 +94,7 @@ function t_o_c($content) {
         $i = 0;
         $dupe = [];
         $content = \preg_replace_callback($pattern, function($m) use($type, $id, $class, $out_id, &$i, &$dupe) {
-            if (\strpos($m[2], $class[4]) === false) {
+            if (\strpos($m[2], $class[3]) === false) {
                 ++$i;
                 $slug = \To::slug($m[3]);
                 // Append unique number to header ID if it is already exists
@@ -105,21 +104,21 @@ function t_o_c($content) {
                     $dupe[$slug] = 0;
                 }
                 if ($type === true || $type === 1) {
-                    $mark = '<a class="' . $class[3] . '" href="#' . \candy($id[3], ['id' => $out_id . '.' . $i]) . '"></a>';
+                    $mark = '<a class="' . $class[2] . '" href="#' . \candy($id[2], ['id' => $out_id . '.' . $i]) . '"></a>';
                 } else if ($type === 2) {
                     if (\strpos($m[2], ' id="') !== false && \preg_match('#\bid="(.*?)"#i', $m[2], $s)) {
-                        $mark = '<a class="' . $class[3] . '" href="#' . $s[1] . '"></a>';
+                        $mark = '<a class="' . $class[2] . '" href="#' . $s[1] . '"></a>';
                     } else {
-                        $mark = '<a class="' . $class[3] . '" href="#' . \candy($id[$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '"></a>';
+                        $mark = '<a class="' . $class[2] . '" href="#' . \candy($id[1][$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '"></a>';
                     }
                 }
                 if (\strpos($m[2], ' class="') === false) {
-                    $attr = ' class="' . $class[$type] . '"' . $m[2];
+                    $attr = ' class="' . $class[1][$type] . '"' . $m[2];
                 } else {
-                    $attr = \str_replace(' class="', ' class="' . $class[$type] . ' ', $m[2]);
+                    $attr = \str_replace(' class="', ' class="' . $class[1][$type] . ' ', $m[2]);
                 }
                 if (\strpos($m[2], ' id="') === false) {
-                    $attr .= ' id="' . \candy($id[$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '"';
+                    $attr .= ' id="' . \candy($id[1][$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '"';
                 }
                 return '<h' . $m[1] . $attr . '>' . $m[3] . '&#x00A0;' . $mark . '</h' . $m[1] . '>';
             }
