@@ -33,7 +33,7 @@ function t_o_c($content) {
     }
     // Add the CSS file only if needed
     \Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 't-o-c.min.css', 20.1);
-    \Config::set('_t-o-c', \Config::get('_t-o-c', 0) + 1);
+    \Config::set('_t-o-c', (\Config::get('_t-o-c') ?? 0) + 1);
     $pattern = '#<h([1-6])(\s[^>]*)?>([\s\S]*?)</h\1>#i';
     $depth = $level = 0;
     $out = "";
