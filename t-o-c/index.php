@@ -17,7 +17,7 @@ function t_o_c($content) {
         return $block ? \Block::replace('t-o-c', "", $content) : $content;
     }
     // Disabled by the `state.t-o-c` field, skip…
-    $test = $this->get('state.t-o-c', $hash);
+    $test = $this->get('state.t-o-c') ?? $hash;
     if ($test !== $hash && !$test) {
         return $content;
     }
@@ -42,11 +42,10 @@ function t_o_c($content) {
     $id = $state['id'];
     $class = $state['class'];
     if ($block) {
-        $union = \Extend::state('block', 'union');
-        $open = $union[1][0][0]; // `[[`
-        $close = $union[1][0][1]; // `]]`
-        $end = $union[1][0][2]; // `/`
-        $separator = $union[1][1][3]; // ` `
+        $c = \Block::$config;
+        $open = $c[0][0]; // `[[`
+        $close = $c[0][1]; // `]]`
+        $end = $c[0][2]; // `/`
         if (
             ($type === true || $type === 1) &&
             // `[[t-o-c]]`
@@ -54,9 +53,13 @@ function t_o_c($content) {
             // `[[t-o-c/]]`
             \strpos($content, $open . 't-o-c' . $end . $close) === false &&
             // `[[t-o-c `
-            \strpos($content, $open . 't-o-c' . $separator) === false
+            \strpos($content, $open . 't-o-c ') === false
         ) {
-            $content = \Block::unite('t-o-c', false, ['title' => $out_title]) . "\n\n" . $content;
+            $content = (new \Block([
+                0 => 't-o-c',
+                1 => false,
+                2 => ['title' => $out_title]
+            ])) . "\n\n" . $content;
         }
     }
     $v = \explode(',', \trim(\str_replace(',a,', "", ',' . HTML_WISE_I . ','), ','));
