@@ -1,8 +1,0 @@
----
-type: YAML
-...
-
-o_page_state:
-  t-o-c: ["Hide page’s table of content?", 0]
-
-t_o_c: Table of Content

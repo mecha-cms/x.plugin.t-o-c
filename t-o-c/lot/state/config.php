@@ -10,9 +10,9 @@
 return [
     'type' => 1,
     'id' => [
-        0 => 't-o-c:%{id}%',
-        1 => ["", 'stage:%{id}%', 'point:%{id}%'],
-        2 => 'a:%{id}%'
+        0 => 't-o-c:%s',
+        1 => ["", 'stage:%s', 'point:%s'],
+        2 => 'a:%s'
     ],
     'class' => [
         0 => 't-o-c',

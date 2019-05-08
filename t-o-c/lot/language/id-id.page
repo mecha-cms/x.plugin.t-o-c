@@ -1,8 +1,0 @@
----
-type: YAML
-...
-
-o_page_state:
-  t-o-c: ["Sembunyikan tabel konten halaman?", 0]
-
-t_o_c: Tabel Konten

@@ -1,4 +1,4 @@
-<?php namespace fn;
+<?php namespace _;
 
 function t_o_c($content) {
     $block = \Extend::exist('block');
@@ -38,7 +38,7 @@ function t_o_c($content) {
     $depth = $level = 0;
     $out = "";
     $out_id = \Config::get('_t-o-c');
-    $out_title = \Language::get('t_o_c');
+    $out_title = \Language::get('t-o-c');
     $id = $state['id'];
     $class = $state['class'];
     if ($block) {
@@ -75,7 +75,7 @@ function t_o_c($content) {
                     $out .= '</li>';
                 }
                 $title = \w($m[3][$i], $v);
-                $out .= '<li id="' . \candy($id[2], ['id' => $out_id . '.' . ($i + 1)]) . '">';
+                $out .= '<li id="' . \sprintf($id[2], $out_id . '.' . ($i + 1)) . '">';
                 if (\stripos($m[0][$i], ' id="') !== false && \preg_match('#\bid="(.*?)"#i', $m[0][$i], $s)) {
                     $out .= '<a href="#' . $s[1] . '">';
                 } else {
@@ -86,14 +86,14 @@ function t_o_c($content) {
                     } else {
                         $dupe[$slug] = 0;
                     }
-                    $out .= '<a href="#' . \candy($id[1][$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '">';
+                    $out .= '<a href="#' . \sprintf($id[1][$type], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '">';
                 }
                 $out .= $title . '</a>&#x00A0;<span class="' . $class[2] . '"></span>';
                 $depth = $level;
             }
         }
         $out .= \str_repeat('</li></ol>', $depth - ((int) $m[1][0]) + 1);
-        $out = '<div class="' . $class[0] . '" id="' . \candy($id[0], ['id' => $out_id]) . '"><div class="' . $class[0] . '-header"><h3>' . X . '</h3></div><div class="' . $class[0] . '-body">' . $out . '</div></div>';
+        $out = '<div class="' . $class[0] . '" id="' . \sprintf($id[0], $out_id) . '"><div class="' . $class[0] . '-header"><h3>' . X . '</h3></div><div class="' . $class[0] . '-body">' . $out . '</div></div>';
         $i = 0;
         $dupe = [];
         $content = \preg_replace_callback($pattern, function($m) use($type, $id, $class, $out_id, &$i, &$dupe) {
@@ -107,12 +107,12 @@ function t_o_c($content) {
                     $dupe[$slug] = 0;
                 }
                 if ($type === true || $type === 1) {
-                    $mark = '<a class="' . $class[2] . '" href="#' . \candy($id[2], ['id' => $out_id . '.' . $i]) . '"></a>';
+                    $mark = '<a class="' . $class[2] . '" href="#' . \sprintf($id[2], $out_id . '.' . $i) . '"></a>';
                 } else if ($type === 2) {
                     if (\strpos($m[2], ' id="') !== false && \preg_match('#\bid="(.*?)"#i', $m[2], $s)) {
                         $mark = '<a class="' . $class[2] . '" href="#' . $s[1] . '"></a>';
                     } else {
-                        $mark = '<a class="' . $class[2] . '" href="#' . \candy($id[1][$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '"></a>';
+                        $mark = '<a class="' . $class[2] . '" href="#' . \sprintf($id[1][$type], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '"></a>';
                     }
                 }
                 if (\strpos($m[2], ' class="') === false) {
@@ -121,7 +121,7 @@ function t_o_c($content) {
                     $attr = \str_replace(' class="', ' class="' . $class[1][$type] . ' ', $m[2]);
                 }
                 if (\strpos($m[2], ' id="') === false) {
-                    $attr .= ' id="' . \candy($id[1][$type], ['id' => $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")]) . '"';
+                    $attr .= ' id="' . \sprintf($id[1][$type], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '"';
                 }
                 return '<h' . $m[1] . $attr . '>' . $m[3] . '&#x00A0;' . $mark . '</h' . $m[1] . '>';
             }
@@ -134,3 +134,10 @@ function t_o_c($content) {
 }
 
 \Hook::set('page.content', __NAMESPACE__ . "\\t_o_c", 10);
+
+\Language::set([
+    'o:page-state' => [
+        't-o-c' => ['Hide page’s table of content?', 0]
+    ],
+    't-o-c' => 'Table of Content'
+]);
