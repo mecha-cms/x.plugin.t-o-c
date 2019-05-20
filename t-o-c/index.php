@@ -1,7 +1,7 @@
 <?php namespace _;
 
 function t_o_c($content) {
-    $block = \Extend::exist('block');
+    $block = \extend('block');
     $hash = X . $this->path . X;
     if (
         // No content…
@@ -21,11 +21,11 @@ function t_o_c($content) {
     if ($test !== $hash && !$test) {
         return $content;
     }
-    $state = (array) \Plugin::state('t-o-c');
+    $state = \plugin('t-o-c');
     if ($test === true || $test === 1 || $test === 2) {
         $test = ['type' => $test === true ? 1 : $test];
     }
-    $state = \extend($state, (array) $test);
+    $state = \alter($state, (array) $test);
     $type = $state['type'];
     // Disabled by the `type` state, skip…
     if ($type === false || $type === 0) {
