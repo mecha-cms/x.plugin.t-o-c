@@ -2,7 +2,7 @@
 
 function t_o_c($content) {
     $block = \extend('block');
-    $hash = X . $this->path . X;
+    $hash = P . $this->path . P;
     if (
         // No content…
         !$content ||
@@ -93,7 +93,7 @@ function t_o_c($content) {
             }
         }
         $out .= \str_repeat('</li></ol>', $depth - ((int) $m[1][0]) + 1);
-        $out = '<div class="' . $class[0] . '" id="' . \sprintf($id[0], $out_id) . '"><div class="' . $class[0] . '-header"><h3>' . X . '</h3></div><div class="' . $class[0] . '-body">' . $out . '</div></div>';
+        $out = '<div class="' . $class[0] . '" id="' . \sprintf($id[0], $out_id) . '"><div class="' . $class[0] . '-header"><h3>' . P . '</h3></div><div class="' . $class[0] . '-body">' . $out . '</div></div>';
         $i = 0;
         $dupe = [];
         $content = \preg_replace_callback($pattern, function($m) use($type, $id, $class, $out_id, &$i, &$dupe) {
@@ -128,8 +128,8 @@ function t_o_c($content) {
             return $m[0];
         }, $content);
         return $block ? \Block::replace('t-o-c', function($content, $attr) use($out, $out_title) {
-            return \str_replace(X, $attr['title'] ?? $out_title, $out);
-        }, $content) : \str_replace(X, $out_title, $out) . $content;
+            return \str_replace(P, $attr['title'] ?? $out_title, $out);
+        }, $content) : \str_replace(P, $out_title, $out) . $content;
     }
 }
 
