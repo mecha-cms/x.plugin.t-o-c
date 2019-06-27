@@ -1,7 +1,7 @@
 <?php namespace _;
 
 function t_o_c($content) {
-    $block = \extend('block');
+    $block = \extension('block');
     $hash = P . $this->path . P;
     if (
         // No content…
