@@ -25,7 +25,7 @@ function t_o_c($content) {
     if ($test === true || $test === 1 || $test === 2) {
         $test = ['type' => $test === true ? 1 : $test];
     }
-    $state = \alter($state, (array) $test);
+    $state = \extend($state, (array) $test);
     $type = $state['type'];
     // Disabled by the `type` state, skip…
     if ($type === false || $type === 0) {
