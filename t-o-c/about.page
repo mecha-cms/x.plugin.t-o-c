@@ -3,22 +3,23 @@ title: Table of Content
 description: Generate table of content automatically.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.4.1
+version: 2.4.2
 
-lot:
-  x:
-    asset: 1
+use:
+  '.\lot\x\asset': 1
+  '.\lot\x\block': 0
+  '.\lot\x\page': 1
 ...
 
-This plugin will automatically create a table of content within the page content that has several headers so that you can use it to navigate between page headers. If you set the `type` value to `2`, then the table of content will not be inserted into the page content, and this plugin will only serve as an automatic permanent link ID generator of headers in your page content.
+This extension is used to build table of content of the page that has several headers automatically so that you can use it to navigate between page headers. If you set the `type` value to `2`, then the table of content will not be inserted into the page content, and this extension will only serve as an automatic permanent link ID generator for every header in your page content.
 
 ### Basic Usage
 
-Configuration data are available in `.\lot\x\plugin\lot\t-o-c\lot\state\config.php`.
+Configuration data are available in `.\lot\x\t-o-c\lot\state\config.php`.
 
 #### Custom Header ID
 
-You have the full control to determine your own header ID using the **Markdown Extra** syntax or with plain HTML markup. This plugin will not overwrite the specific ID that you have specified in the header:
+You have the full control to determine your own header ID using the **Markdown Extra** syntax or with plain HTML markup. This extension will not overwrite the specific ID that you have specified in the header:
 
 ~~~ .markdown
 #### Header Special {#special}
@@ -32,14 +33,14 @@ You have the full control to determine your own header ID using the **Markdown E
 
 #### Exclude Headers from TOC
 
-Add `x:t-o-c` class to the desired headers to exclude them from the TOC tree and to disable the automatic permanent link ID creation:
+Add `not:t-o-c` class to the desired headers to exclude them from the TOC tree and to disable the automatic permanent link ID creation:
 
 ~~~ .markdown
-#### Example Header {.x:t-o-c}
+#### Example Header {.not:t-o-c}
 ~~~
 
 ~~~ .html
-<h3 class="x:t-o-c">Example Header</h3>
+<h3 class="not:t-o-c">Example Header</h3>
 ~~~
 
 #### Custom Placement
@@ -67,7 +68,7 @@ Third paragraph goes here.
 
 There are several ways to disable the automatic table of content placement.
 
-The first way is through the plugin configuration, that is, by setting the value of the `type` property to `0` or `false` (alias for `0`). This will disable the table of content by default:
+The first way is through the extension configuration, that is, by setting the value of the `type` property to `0` or `false` (alias for `0`). This will disable the table of content by default:
 
 ~~~ .php
 <?php
@@ -124,5 +125,3 @@ state:
 ~~~
 
  *[TOC]: Table of Content
-
-<!-- block:donate -->

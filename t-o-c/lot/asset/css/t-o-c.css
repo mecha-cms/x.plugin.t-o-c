@@ -1,65 +1,81 @@
-.t-o-c {margin:1rem 0 0}
-.t-o-c-header h3 {
-  font-size:100%;
-  color:inherit;
-  margin:0 0 .4em 0;
-  padding:0;
+.t-o-c {
+  display: block;
+  margin: 0;
+  padding: 0;
 }
-.t-o-c\:a {
-  visibility:hidden;
-  font:inherit;
-  font-weight:normal;
+.t-o-c-header {
+  display: inline;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  font-weight: bold;
+  color: inherit;
+  cursor: pointer;
 }
-.t-o-c\:a::before {content:'\25C2'}
-.t-o-c\:point .t-o-c\:a::before {content:'\00A7'}
-.t-o-c\:stage .t-o-c\:a::before {content:'\25B4'}
-.t-o-c\:point:target::before,
-.t-o-c\:stage:target::before {
-  content:"";
-  display:block;
-  height:1rem;
-  margin-top:-.5rem;
+.t-o-c-body {
+  display: block;
+}
+.a\:t-o-c {
+  visibility: hidden;
+  font: inherit;
+  font-weight: normal;
+}
+.a\:t-o-c::before {
+  content: '\25C2';
+}
+.is\:t-o-c .a\:t-o-c::before {
+  content: '\25B4';
+}
+.t-o-c\:2 .is\:t-o-c .a\:t-o-c::before {
+  content: '\00A7';
+}
+.is\:t-o-c:target::before,
+.is\:t-o-c:target::before {
+  content: "";
+  display: block;
+  height: 1rem;
+  margin-top: -.5rem;
 }
 .t-o-c ol {
-  list-style:none;
-  margin:.2em 0 0 1.2em; /* indent */
-  padding:0;
-  overflow:hidden;
+  list-style: none;
+  margin: .2em 0 0 1.2em; /* indent */
+  padding: 0;
+  overflow: hidden;
 }
 .t-o-c li {
-  margin:0;
-  padding:0 0 0 1.4em; /* indent + .2em */
-  position:relative;
+  margin: 0;
+  padding: 0 0 0 1.4em; /* indent + .2em */
+  position: relative;
 }
-.t-o-c ol ol {margin:0 0 0 .2em}
+.t-o-c ol ol {
+  margin: 0 0 0 .2em;
+}
 .t-o-c li::before {
-  content:"";
-  display:block;
-  width:0;
-  border-left:1px solid;
-  position:absolute;
-  top:0;
-  bottom:0;
-  left:0;
+  content: "";
+  display: block;
+  width: 0;
+  border-left: 1px solid;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
 }
 .t-o-c li::after {
-  content:"";
-  display:block;
-  width:1em; /* indent - .2em */
-  border-top:1px solid;
-  position:absolute;
-  top:.8em;
-  bottom:0;
-  left:0;
+  content: "";
+  display: block;
+  width: 1em; /* indent - .2em */
+  border-top: 1px solid;
+  position: absolute;
+  top: .8em;
+  bottom: 0;
+  left: 0;
 }
-.t-o-c li:last-child::after {background:var(--color--inverse,#fff)} /* same with page background */
-.t-o-c li:target > .t-o-c\:a,
-.t-o-c li a:hover + .t-o-c\:a,
-.t-o-c\:stage:hover .t-o-c\:a,
-.t-o-c\:stage:target .t-o-c\:a,
-.t-o-c\:stage:hover .t-o-c\:a,
-.t-o-c\:stage:target .t-o-c\:a,
-.t-o-c\:point:hover .t-o-c\:a,
-.t-o-c\:point:target .t-o-c\:a,
-.t-o-c\:point:hover .t-o-c\:a,
-.t-o-c\:point:target .t-o-c\:a {visibility:visible}
+.t-o-c li:last-child::after {
+  background: #fff; /* same with page background */
+}
+.t-o-c li:target > .a\:t-o-c,
+.t-o-c li a:hover + .a\:t-o-c,
+.is\:t-o-c:hover .a\:t-o-c,
+.is\:t-o-c:target .a\:t-o-c {
+  visibility: visible;
+}

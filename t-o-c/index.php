@@ -1,7 +1,7 @@
-<?php namespace _;
+<?php namespace _\lot\x;
 
 function t_o_c($content) {
-    $block = \extension('block');
+    $block = \state('block');
     $hash = P . $this->path . P;
     if (
         // No content…
@@ -21,7 +21,7 @@ function t_o_c($content) {
     if ($test !== $hash && !$test) {
         return $content;
     }
-    $state = \plugin('t-o-c');
+    $state = \state('t-o-c');
     if ($test === true || $test === 1 || $test === 2) {
         $test = ['type' => $test === true ? 1 : $test];
     }
@@ -33,11 +33,16 @@ function t_o_c($content) {
     }
     // Add the CSS file only if needed
     \Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 't-o-c.min.css', 20.1);
-    \Config::set('_t-o-c', (\Config::get('_t-o-c') ?? 0) + 1);
-    $pattern = '#<h([1-6])(\s[^>]*)?>([\s\S]*?)</h\1>#i';
+    \Config::set([
+        '[class]' => \array_merge(['t-o-c:' . $type], (array) \Config::get('[class]', true)),
+        '[t-o-c]' => (\Config::get('[t-o-c]') ?? 0) + 1,
+        'has' => ['t-o-c' => true],
+        'is' => ['t-o-c' => true]
+    ]);
+    $pattern = '/<h([1-6])(\s[^>]*)?>([\s\S]*?)<\/h\1>/i';
     $depth = $level = 0;
     $out = "";
-    $out_id = \Config::get('_t-o-c');
+    $out_id = \Config::get('[t-o-c]');
     $out_title = \Language::get('t-o-c');
     $id = $state['id'];
     $class = $state['class'];
@@ -76,7 +81,7 @@ function t_o_c($content) {
                 }
                 $title = \w($m[3][$i], $v);
                 $out .= '<li id="' . \sprintf($id[2], $out_id . '.' . ($i + 1)) . '">';
-                if (\stripos($m[0][$i], ' id="') !== false && \preg_match('#\bid="(.*?)"#i', $m[0][$i], $s)) {
+                if (\stripos($m[0][$i], ' id="') !== false && \preg_match('/\bid="(.*?)"/i', $m[0][$i], $s)) {
                     $out .= '<a href="#' . $s[1] . '">';
                 } else {
                     $slug = \To::slug($title);
@@ -86,14 +91,14 @@ function t_o_c($content) {
                     } else {
                         $dupe[$slug] = 0;
                     }
-                    $out .= '<a href="#' . \sprintf($id[1][$type], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '">';
+                    $out .= '<a href="#' . \sprintf($id[1], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '">';
                 }
                 $out .= $title . '</a>&#x00A0;<span class="' . $class[2] . '"></span>';
                 $depth = $level;
             }
         }
         $out .= \str_repeat('</li></ol>', $depth - ((int) $m[1][0]) + 1);
-        $out = '<div class="' . $class[0] . '" id="' . \sprintf($id[0], $out_id) . '"><div class="' . $class[0] . '-header"><h3>' . P . '</h3></div><div class="' . $class[0] . '-body">' . $out . '</div></div>';
+        $out = '<details class="' . $class[0] . ' p" id="' . \sprintf($id[0], $out_id) . '" open><summary class="' . $class[0] . '-header">' . P . '</summary><div class="' . $class[0] . '-body">' . $out . '</div></details>';
         $i = 0;
         $dupe = [];
         $content = \preg_replace_callback($pattern, function($m) use($type, $id, $class, $out_id, &$i, &$dupe) {
@@ -109,27 +114,27 @@ function t_o_c($content) {
                 if ($type === true || $type === 1) {
                     $mark = '<a class="' . $class[2] . '" href="#' . \sprintf($id[2], $out_id . '.' . $i) . '"></a>';
                 } else if ($type === 2) {
-                    if (\strpos($m[2], ' id="') !== false && \preg_match('#\bid="(.*?)"#i', $m[2], $s)) {
+                    if (\strpos($m[2], ' id="') !== false && \preg_match('/\bid="(.*?)"/i', $m[2], $s)) {
                         $mark = '<a class="' . $class[2] . '" href="#' . $s[1] . '"></a>';
                     } else {
-                        $mark = '<a class="' . $class[2] . '" href="#' . \sprintf($id[1][$type], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '"></a>';
+                        $mark = '<a class="' . $class[2] . '" href="#' . \sprintf($id[1], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '"></a>';
                     }
                 }
                 if (\strpos($m[2], ' class="') === false) {
-                    $attr = ' class="' . $class[1][$type] . '"' . $m[2];
+                    $attr = ' class="' . $class[1] . '"' . $m[2];
                 } else {
-                    $attr = \str_replace(' class="', ' class="' . $class[1][$type] . ' ', $m[2]);
+                    $attr = \str_replace(' class="', ' class="' . $class[1] . ' ', $m[2]);
                 }
                 if (\strpos($m[2], ' id="') === false) {
-                    $attr .= ' id="' . \sprintf($id[1][$type], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '"';
+                    $attr .= ' id="' . \sprintf($id[1], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '"';
                 }
                 return '<h' . $m[1] . $attr . '>' . $m[3] . '&#x00A0;' . $mark . '</h' . $m[1] . '>';
             }
             return $m[0];
         }, $content);
         return $block ? \Block::replace('t-o-c', function($content, $attr) use($out, $out_title) {
-            return \str_replace(P, $attr['title'] ?? $out_title, $out);
-        }, $content) : \str_replace(P, $out_title, $out) . $content;
+            return \strtr($out, [P => $attr['title'] ?? $out_title]);
+        }, $content) : ($type === 1 ? \strtr($out, [P => $out_title]) : "") . $content;
     }
 }
 
