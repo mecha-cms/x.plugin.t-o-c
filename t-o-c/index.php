@@ -34,7 +34,7 @@ function t_o_c($content) {
     // Add the CSS file only if needed
     \Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 't-o-c.min.css', 20.1);
     \Config::set([
-        '[class]' => \array_merge(['t-o-c:' . $type], (array) \Config::get('[class]', true)),
+        '[class]' => ['t-o-c:' . $type => true],
         '[t-o-c]' => (\Config::get('[t-o-c]') ?? 0) + 1,
         'has' => ['t-o-c' => true],
         'is' => ['t-o-c' => true]
@@ -98,7 +98,7 @@ function t_o_c($content) {
             }
         }
         $out .= \str_repeat('</li></ol>', $depth - ((int) $m[1][0]) + 1);
-        $out = '<details class="' . $class[0] . ' p" id="' . \sprintf($id[0], $out_id) . '" open><summary class="' . $class[0] . '-header">' . P . '</summary><div class="' . $class[0] . '-body">' . $out . '</div></details>';
+        $out = '<details class="' . $class[0] . ' p" id="' . \sprintf($id[0], $out_id) . '"' . (!empty($state['open']) ? ' open' : "") . '><summary class="' . $class[0] . '-header">' . P . '</summary><div class="' . $class[0] . '-body">' . $out . '</div></details>';
         $i = 0;
         $dupe = [];
         $content = \preg_replace_callback($pattern, function($m) use($type, $id, $class, $out_id, &$i, &$dupe) {

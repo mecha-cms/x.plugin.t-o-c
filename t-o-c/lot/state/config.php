@@ -19,5 +19,6 @@ return [
         1 => 'is:t-o-c',
         2 => 'a:t-o-c',
         3 => 'not:t-o-c'
-    ]
+    ],
+    'open' => true // Set to `false` to collapse the TOC by default
 ];

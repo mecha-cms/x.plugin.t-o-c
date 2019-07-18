@@ -11,7 +11,7 @@ use:
   '.\lot\x\page': 1
 ...
 
-This extension is used to build table of content of the page that has several headers automatically so that you can use it to navigate between page headers. If you set the `type` value to `2`, then the table of content will not be inserted into the page content, and this extension will only serve as an automatic permanent link ID generator for every header in your page content.
+This extension lets you build automatic table of content on the page that has several headers in it so that you can use it to navigate between page headers. If you set the `type` value to `2`, then the table of content will not be inserted into the page content, and this extension will only serve as an automatic permanent link ID generator for every header in your page content.
 
 ### Basic Usage
 
