@@ -34,10 +34,9 @@ function t_o_c($content) {
     // Add the CSS file only if needed
     \Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 't-o-c.min.css', 20.1);
     \Config::set([
-        '[class]' => ['t-o-c:' . $type => true],
+        '[content]' => ['t-o-c:' . $type => true],
         '[t-o-c]' => (\Config::get('[t-o-c]') ?? 0) + 1,
-        'has' => ['t-o-c' => true],
-        'is' => ['t-o-c' => true]
+        'has' => ['t-o-c' => true]
     ]);
     $pattern = '/<h([1-6])(\s[^>]*)?>([\s\S]*?)<\/h\1>/i';
     $depth = $level = 0;
