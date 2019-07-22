@@ -66,7 +66,7 @@ function t_o_c($content) {
             ])) . "\n\n" . $content;
         }
     }
-    $v = \explode(',', \trim(\str_replace(',a,', "", ',' . HTML_WISE_I . ','), ','));
+    $v = \explode(',', \trim(\str_replace(',a,', "", ',' . HTML_FORMAT_INLINE . ','), ','));
     $dupe = [];
     if (\preg_match_all($pattern, $content, $m)) {
         for ($i = 0, $count = \count($m[0]); $i < $count; ++$i) {
