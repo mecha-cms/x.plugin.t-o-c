@@ -66,7 +66,6 @@ function t_o_c($content) {
             ])) . "\n\n" . $content;
         }
     }
-    $v = \explode(',', \trim(\str_replace(',a,', "", ',' . HTML_FORMAT_INLINE . ','), ','));
     $dupe = [];
     if (\preg_match_all($pattern, $content, $m)) {
         for ($i = 0, $count = \count($m[0]); $i < $count; ++$i) {
@@ -78,7 +77,7 @@ function t_o_c($content) {
                     $out .= \str_repeat('</li></ol>', $depth - $level);
                     $out .= '</li>';
                 }
-                $title = \w($m[3][$i], $v);
+                $title = \w($m[3][$i], 'abbr,b,br,cite,code,del,dfn,em,i,ins,kbd,mark,q,span,strong,sub,sup,time,u,var');
                 $out .= '<li id="' . \sprintf($id[2], $out_id . '.' . ($i + 1)) . '">';
                 if (\stripos($m[0][$i], ' id="') !== false && \preg_match('/\bid="(.*?)"/i', $m[0][$i], $s)) {
                     $out .= '<a href="#' . $s[1] . '">';
