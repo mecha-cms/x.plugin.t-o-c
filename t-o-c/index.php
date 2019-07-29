@@ -77,7 +77,7 @@ function t_o_c($content) {
                     $out .= \str_repeat('</li></ol>', $depth - $level);
                     $out .= '</li>';
                 }
-                $title = \w($m[3][$i], 'abbr,b,br,cite,code,del,dfn,em,i,ins,kbd,mark,q,span,strong,sub,sup,time,u,var');
+                $title = \w($m[3][$i], 'abbr,b,br,cite,code,del,dfn,em,i,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
                 $out .= '<li id="' . \sprintf($id[2], $out_id . '.' . ($i + 1)) . '">';
                 if (\stripos($m[0][$i], ' id="') !== false && \preg_match('/\bid="(.*?)"/i', $m[0][$i], $s)) {
                     $out .= '<a href="#' . $s[1] . '">';
@@ -96,7 +96,7 @@ function t_o_c($content) {
             }
         }
         $out .= \str_repeat('</li></ol>', $depth - ((int) $m[1][0]) + 1);
-        $out = '<details class="' . $class[0] . ' p" id="' . \sprintf($id[0], $out_id) . '"' . (!empty($state['open']) ? ' open' : "") . '><summary class="' . $class[0] . '-header">' . P . '</summary><div class="' . $class[0] . '-body">' . $out . '</div></details>';
+        $out = '<details class="' . $class[0] . ' p" id="' . \sprintf($id[0], $out_id) . '"' . (!empty($state['open']) ? ' open' : "") . '><summary>' . P . '</summary>' . $out . '</details>';
         $i = 0;
         $dupe = [];
         $content = \preg_replace_callback($pattern, function($m) use($type, $id, $class, $out_id, &$i, &$dupe) {

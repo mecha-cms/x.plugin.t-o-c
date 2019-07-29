@@ -1,9 +1,10 @@
 .t-o-c {
   display: block;
-  margin: 0;
+  margin-right: 0;
+  margin-left: 0;
   padding: 0;
 }
-.t-o-c-header {
+.t-o-c summary {
   display: inline;
   margin: 0;
   padding: 0;
@@ -11,9 +12,7 @@
   font-weight: bold;
   color: inherit;
   cursor: pointer;
-}
-.t-o-c-body {
-  display: block;
+  user-select: none;
 }
 .a\:t-o-c {
   visibility: hidden;
