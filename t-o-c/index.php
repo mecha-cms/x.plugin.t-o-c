@@ -82,14 +82,14 @@ function t_o_c($content) {
                 if (\stripos($m[0][$i], ' id="') !== false && \preg_match('/\bid="(.*?)"/i', $m[0][$i], $s)) {
                     $out .= '<a href="#' . $s[1] . '">';
                 } else {
-                    $slug = \To::slug($title);
+                    $kebab = \To::kebab($title);
                     // Append unique number to header ID if it is already exists
-                    if (isset($dupe[$slug])) {
-                        ++$dupe[$slug];
+                    if (isset($dupe[$kebab])) {
+                        ++$dupe[$kebab];
                     } else {
-                        $dupe[$slug] = 0;
+                        $dupe[$kebab] = 0;
                     }
-                    $out .= '<a href="#' . \sprintf($id[1], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '">';
+                    $out .= '<a href="#' . \sprintf($id[1], $kebab . ($dupe[$kebab] !== 0 ? '.' . $dupe[$kebab] : "")) . '">';
                 }
                 $out .= $title . '</a>&#x00A0;<span class="' . $class[2] . '"></span>';
                 $depth = $level;
@@ -102,12 +102,12 @@ function t_o_c($content) {
         $content = \preg_replace_callback($pattern, function($m) use($type, $id, $class, $out_id, &$i, &$dupe) {
             if (\strpos($m[2], $class[3]) === false) {
                 ++$i;
-                $slug = \To::slug($m[3]);
+                $kebab = \To::kebab($m[3]);
                 // Append unique number to header ID if it is already exists
-                if (isset($dupe[$slug])) {
-                    ++$dupe[$slug];
+                if (isset($dupe[$kebab])) {
+                    ++$dupe[$kebab];
                 } else {
-                    $dupe[$slug] = 0;
+                    $dupe[$kebab] = 0;
                 }
                 if ($type === true || $type === 1) {
                     $mark = '<a class="' . $class[2] . '" href="#' . \sprintf($id[2], $out_id . '.' . $i) . '"></a>';
@@ -115,7 +115,7 @@ function t_o_c($content) {
                     if (\strpos($m[2], ' id="') !== false && \preg_match('/\bid="(.*?)"/i', $m[2], $s)) {
                         $mark = '<a class="' . $class[2] . '" href="#' . $s[1] . '"></a>';
                     } else {
-                        $mark = '<a class="' . $class[2] . '" href="#' . \sprintf($id[1], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '"></a>';
+                        $mark = '<a class="' . $class[2] . '" href="#' . \sprintf($id[1], $kebab . ($dupe[$kebab] !== 0 ? '.' . $dupe[$kebab] : "")) . '"></a>';
                     }
                 }
                 if (\strpos($m[2], ' class="') === false) {
@@ -124,7 +124,7 @@ function t_o_c($content) {
                     $attr = \str_replace(' class="', ' class="' . $class[1] . ' ', $m[2]);
                 }
                 if (\strpos($m[2], ' id="') === false) {
-                    $attr .= ' id="' . \sprintf($id[1], $slug . ($dupe[$slug] !== 0 ? '.' . $dupe[$slug] : "")) . '"';
+                    $attr .= ' id="' . \sprintf($id[1], $kebab . ($dupe[$kebab] !== 0 ? '.' . $dupe[$kebab] : "")) . '"';
                 }
                 return '<h' . $m[1] . $attr . '>' . $m[3] . '&#x00A0;' . $mark . '</h' . $m[1] . '>';
             }

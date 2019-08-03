@@ -3,7 +3,7 @@ title: Table of Content
 description: Generate table of content automatically.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.4.3
+version: 2.4.4
 
 use:
   '.\lot\x\asset': 1
