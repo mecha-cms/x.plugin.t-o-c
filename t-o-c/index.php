@@ -2,7 +2,7 @@
 
 function t_o_c($content) {
     $block = \state('block');
-    $hash = P . $this->path . P;
+    $hash = \P . $this->path . \P;
     if (
         // No content…
         !$content ||
@@ -14,7 +14,7 @@ function t_o_c($content) {
         \stripos($content, '</h') === false
     ) {
         // Skip!
-        return $block ? \Block::replace('t-o-c', "", $content) : $content;
+        return $block ? \Block::alter('t-o-c', "", $content) : $content;
     }
     // Disabled by the `state.t-o-c` field, skip…
     $test = $this->get('state.t-o-c') ?? $hash;
@@ -32,7 +32,7 @@ function t_o_c($content) {
         return $content;
     }
     // Add the CSS file only if needed
-    \Asset::set(__DIR__ . DS . 'lot' . DS . 'asset' . DS . 'css' . DS . 't-o-c.min.css', 20.1);
+    \Asset::set(__DIR__ . \DS . 'lot' . \DS . 'asset' . \DS . 'css' . \DS . 't-o-c.min.css', 20.1);
     \Config::set([
         '[content]' => ['t-o-c:' . $type => true],
         '[t-o-c]' => (\Config::get('[t-o-c]') ?? 0) + 1,
@@ -96,7 +96,7 @@ function t_o_c($content) {
             }
         }
         $out .= \str_repeat('</li></ol>', $depth - ((int) $m[1][0]) + 1);
-        $out = '<details class="' . $class[0] . ' p" id="' . \sprintf($id[0], $out_id) . '"' . (!empty($state['open']) ? ' open' : "") . '><summary>' . P . '</summary>' . $out . '</details>';
+        $out = '<details class="' . $class[0] . ' p" id="' . \sprintf($id[0], $out_id) . '"' . (!empty($state['open']) ? ' open' : "") . '><summary>' . \P . '</summary>' . $out . '</details>';
         $i = 0;
         $dupe = [];
         $content = \preg_replace_callback($pattern, function($m) use($type, $id, $class, $out_id, &$i, &$dupe) {
@@ -130,17 +130,12 @@ function t_o_c($content) {
             }
             return $m[0];
         }, $content);
-        return $block ? \Block::replace('t-o-c', function($content, $attr) use($out, $out_title) {
-            return \strtr($out, [P => $attr['title'] ?? $out_title]);
-        }, $content) : ($type === 1 ? \strtr($out, [P => $out_title]) : "") . $content;
+        return $block ? \Block::alter('t-o-c', function($content, $attr) use($out, $out_title) {
+            return \strtr($out, [\P => $attr['title'] ?? $out_title]);
+        }, $content) : ($type === 1 ? \strtr($out, [\P => $out_title]) : "") . $content;
     }
 }
 
 \Hook::set('page.content', __NAMESPACE__ . "\\t_o_c", 10);
 
-\Language::set([
-    'o:page-state' => [
-        't-o-c' => ['Hide page’s table of content?', 0]
-    ],
-    't-o-c' => 'Table of Content'
-]);
+\Language::set('t-o-c', 'Table of Content');
