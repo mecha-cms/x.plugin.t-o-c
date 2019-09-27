@@ -3,7 +3,7 @@ title: Table of Content
 description: Generate table of content automatically.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.4.4
+version: 2.5.0
 
 use:
   '.\lot\x\asset': 1
@@ -15,7 +15,7 @@ This extension lets you build automatic table of content on the page that has se
 
 ### Basic Usage
 
-Configuration data are available in `.\lot\x\t-o-c\lot\state\config.php`.
+Configuration data are available in `.\lot\x\t-o-c\state.php`.
 
 #### Custom Header ID
 

@@ -1,15 +1,15 @@
 <?php namespace _\lot\x;
 
 function t_o_c($content) {
-    $block = \state('block');
+    $block = \State::get('x.block', true);
     $hash = \P . $this->path . \P;
     if (
         // No content…
         !$content ||
         // Is error page…
-        \Config::is('error') ||
+        \State::is('error') ||
         // Is in page(s) view…
-        \Config::is('pages') ||
+        \State::is('pages') ||
         // No header(s)…
         \stripos($content, '</h') === false
     ) {
@@ -21,11 +21,11 @@ function t_o_c($content) {
     if ($test !== $hash && !$test) {
         return $content;
     }
-    $state = \state('t-o-c');
+    $state = \State::get('x.t-o-c', true);
     if ($test === true || $test === 1 || $test === 2) {
         $test = ['type' => $test === true ? 1 : $test];
     }
-    $state = \extend($state, (array) $test);
+    $state = \array_replace_recursive($state, (array) $test);
     $type = $state['type'];
     // Disabled by the `type` state, skip…
     if ($type === false || $type === 0) {
@@ -33,20 +33,20 @@ function t_o_c($content) {
     }
     // Add the CSS file only if needed
     \Asset::set(__DIR__ . \DS . 'lot' . \DS . 'asset' . \DS . 'css' . \DS . 't-o-c.min.css', 20.1);
-    \Config::set([
+    \State::set([
         '[content]' => ['t-o-c:' . $type => true],
-        '[t-o-c]' => (\Config::get('[t-o-c]') ?? 0) + 1,
+        '[t-o-c]' => (\State::get('[t-o-c]') ?? 0) + 1,
         'has' => ['t-o-c' => true]
     ]);
     $pattern = '/<h([1-6])(\s[^>]*)?>([\s\S]*?)<\/h\1>/i';
     $depth = $level = 0;
     $out = "";
-    $out_id = \Config::get('[t-o-c]');
+    $out_id = \State::get('[t-o-c]');
     $out_title = \Language::get('t-o-c');
     $id = $state['id'];
     $class = $state['class'];
     if ($block) {
-        $c = \Block::$config;
+        $c = \Block::$state;
         $open = $c[0][0]; // `[[`
         $close = $c[0][1]; // `]]`
         $end = $c[0][2]; // `/`
