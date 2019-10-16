@@ -42,7 +42,7 @@ function t_o_c($content) {
     $depth = $level = 0;
     $out = "";
     $out_id = \State::get('[t-o-c]');
-    $out_title = \Language::get('t-o-c');
+    $out_title = \i('Table of Content');
     $id = $state['id'];
     $class = $state['class'];
     if ($block) {
@@ -137,5 +137,3 @@ function t_o_c($content) {
 }
 
 \Hook::set('page.content', __NAMESPACE__ . "\\t_o_c", 10);
-
-\Language::set('t-o-c', 'Table of Content');
