@@ -11,7 +11,7 @@ function t_o_c($content) {
         // Is in page(s) view…
         \State::is('pages') ||
         // No header(s)…
-        \stripos($content, '</h') === false
+        false === \stripos($content, '</h')
     ) {
         // Skip!
         return $block ? \Block::alter('t-o-c', "", $content) : $content;
@@ -22,19 +22,19 @@ function t_o_c($content) {
         return $content;
     }
     $state = \State::get('x.t-o-c', true);
-    if ($test === true || $test === 1 || $test === 2) {
-        $test = ['type' => $test === true ? 1 : $test];
+    if (true === $test || 1 === $test || 2 === $test) {
+        $test = ['type' => true === $test ? 1 : $test];
     }
     $state = \array_replace_recursive($state, (array) $test);
     $type = $state['type'];
     // Disabled by the `type` state, skip…
-    if ($type === false || $type === 0) {
+    if (false === $type || 0 === $type) {
         return $content;
     }
     // Add the CSS file only if needed
     \Asset::set(__DIR__ . \DS . 'lot' . \DS . 'asset' . \DS . 'css' . \DS . 't-o-c.min.css', 20.1);
     \State::set([
-        '[content]' => ['t-o-c:' . $type => true],
+        '[layout]' => ['t-o-c:' . $type => true],
         '[t-o-c]' => (\State::get('[t-o-c]') ?? 0) + 1,
         'has' => ['t-o-c' => true]
     ]);
@@ -51,13 +51,13 @@ function t_o_c($content) {
         $close = $c[0][1]; // `]]`
         $end = $c[0][2]; // `/`
         if (
-            ($type === true || $type === 1) &&
+            (true === $type || 1 === $type) &&
             // `[[t-o-c]]`
-            \strpos($content, $open . 't-o-c' . $close) === false &&
+            false === \strpos($content, $open . 't-o-c' . $close) &&
             // `[[t-o-c/]]`
-            \strpos($content, $open . 't-o-c' . $end . $close) === false &&
+            false === \strpos($content, $open . 't-o-c' . $end . $close) &&
             // `[[t-o-c `
-            \strpos($content, $open . 't-o-c ') === false
+            false === \strpos($content, $open . 't-o-c ')
         ) {
             $content = (new \Block([
                 0 => 't-o-c',
@@ -70,7 +70,7 @@ function t_o_c($content) {
     if (\preg_match_all($pattern, $content, $m)) {
         for ($i = 0, $count = \count($m[0]); $i < $count; ++$i) {
             $level = (int) $m[1][$i];
-            if (\strpos($m[0][$i], $class[3]) === false) {
+            if (false === \strpos($m[0][$i], $class[3])) {
                 if ($level > $depth) {
                     $out .= '<ol>';
                 } else {
@@ -79,7 +79,7 @@ function t_o_c($content) {
                 }
                 $title = \w($m[3][$i], 'abbr,b,br,cite,code,del,dfn,em,i,ins,kbd,mark,q,span,strong,sub,sup,svg,time,u,var');
                 $out .= '<li id="' . \sprintf($id[2], $out_id . '.' . ($i + 1)) . '">';
-                if (\stripos($m[0][$i], ' id="') !== false && \preg_match('/\bid="(.*?)"/i', $m[0][$i], $s)) {
+                if (false !== \stripos($m[0][$i], ' id="') && \preg_match('/\bid="(.*?)"/i', $m[0][$i], $s)) {
                     $out .= '<a href="#' . $s[1] . '">';
                 } else {
                     $kebab = \To::kebab($title);
@@ -89,7 +89,7 @@ function t_o_c($content) {
                     } else {
                         $dupe[$kebab] = 0;
                     }
-                    $out .= '<a href="#' . \sprintf($id[1], $kebab . ($dupe[$kebab] !== 0 ? '.' . $dupe[$kebab] : "")) . '">';
+                    $out .= '<a href="#' . \sprintf($id[1], $kebab . (0 !== $dupe[$kebab] ? '.' . $dupe[$kebab] : "")) . '">';
                 }
                 $out .= $title . '</a>&#x00A0;<span class="' . $class[2] . '"></span>';
                 $depth = $level;
@@ -100,7 +100,7 @@ function t_o_c($content) {
         $i = 0;
         $dupe = [];
         $content = \preg_replace_callback($pattern, function($m) use($type, $id, $class, $out_id, &$i, &$dupe) {
-            if (\strpos($m[2], $class[3]) === false) {
+            if (false === \strpos($m[2], $class[3])) {
                 ++$i;
                 $kebab = \To::kebab($m[3]);
                 // Append unique number to header ID if it is already exists
@@ -109,22 +109,22 @@ function t_o_c($content) {
                 } else {
                     $dupe[$kebab] = 0;
                 }
-                if ($type === true || $type === 1) {
+                if (true === $type || 1 === $type) {
                     $mark = '<a class="' . $class[2] . '" href="#' . \sprintf($id[2], $out_id . '.' . $i) . '"></a>';
-                } else if ($type === 2) {
-                    if (\strpos($m[2], ' id="') !== false && \preg_match('/\bid="(.*?)"/i', $m[2], $s)) {
+                } else if (2 === $type) {
+                    if (false !== \strpos($m[2], ' id="') && \preg_match('/\bid="(.*?)"/i', $m[2], $s)) {
                         $mark = '<a class="' . $class[2] . '" href="#' . $s[1] . '"></a>';
                     } else {
-                        $mark = '<a class="' . $class[2] . '" href="#' . \sprintf($id[1], $kebab . ($dupe[$kebab] !== 0 ? '.' . $dupe[$kebab] : "")) . '"></a>';
+                        $mark = '<a class="' . $class[2] . '" href="#' . \sprintf($id[1], $kebab . (0 !== $dupe[$kebab] ? '.' . $dupe[$kebab] : "")) . '"></a>';
                     }
                 }
-                if (\strpos($m[2], ' class="') === false) {
+                if (false === \strpos($m[2], ' class="')) {
                     $attr = ' class="' . $class[1] . '"' . $m[2];
                 } else {
                     $attr = \str_replace(' class="', ' class="' . $class[1] . ' ', $m[2]);
                 }
-                if (\strpos($m[2], ' id="') === false) {
-                    $attr .= ' id="' . \sprintf($id[1], $kebab . ($dupe[$kebab] !== 0 ? '.' . $dupe[$kebab] : "")) . '"';
+                if (false === \strpos($m[2], ' id="')) {
+                    $attr .= ' id="' . \sprintf($id[1], $kebab . (0 !== $dupe[$kebab] ? '.' . $dupe[$kebab] : "")) . '"';
                 }
                 return '<h' . $m[1] . $attr . '>' . $m[3] . '&#x00A0;' . $mark . '</h' . $m[1] . '>';
             }
@@ -132,7 +132,7 @@ function t_o_c($content) {
         }, $content);
         return $block ? \Block::alter('t-o-c', function($content, $attr) use($out, $out_title) {
             return \strtr($out, [\P => $attr['title'] ?? $out_title]);
-        }, $content) : ($type === 1 ? \strtr($out, [\P => $out_title]) : "") . $content;
+        }, $content) : (1 === $type ? \strtr($out, [\P => $out_title]) : "") . $content;
     }
 }
 
