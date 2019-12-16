@@ -42,7 +42,7 @@ function t_o_c($content) {
     $depth = $level = 0;
     $out = "";
     $out_id = \State::get('[t-o-c]');
-    $out_title = \i('Table of Content');
+    $out_title = \i('Table of Contents');
     $id = $state['id'];
     $class = $state['class'];
     if ($block) {
