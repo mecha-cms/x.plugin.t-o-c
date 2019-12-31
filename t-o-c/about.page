@@ -19,7 +19,7 @@ Configuration data are available in `.\lot\x\t-o-c\state.php`.
 
 #### Custom Header ID
 
-You have the full control to determine your own header ID using the **Markdown Extra** syntax or with plain HTML markup. This extension will not overwrite the specific ID that you have specified in the header:
+You have the full control to determine your own header ID using the Markdown Extra syntax or with plain HTML markup. This extension will not overwrite the specific ID that you have specified in the header:
 
 ~~~ .markdown
 #### Header Special {#special}

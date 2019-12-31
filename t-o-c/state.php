@@ -11,8 +11,8 @@ return [
     'type' => 1,
     'id' => [
         0 => 't-o-c:%s',
-        1 => 'stage:%s',
-        2 => 'a:%s'
+        1 => 'to:%s',
+        2 => 'from:%s'
     ],
     'class' => [
         0 => 't-o-c',
