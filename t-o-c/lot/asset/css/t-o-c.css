@@ -14,6 +14,9 @@
   cursor: pointer;
   user-select: none;
 }
+.t-o-c summary::-webkit-details-marker {
+  display: none;
+}
 .a\:t-o-c {
   visibility: hidden;
   font: inherit;
