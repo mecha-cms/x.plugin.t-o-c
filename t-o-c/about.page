@@ -45,7 +45,8 @@ Add `not:t-o-c` class to the desired headers to exclude them from the TOC tree a
 
 If you have _Block_ extension installed, you can put <code>&#x5B;&#x5B;t-o-c&#x5D;&#x5D;</code> block anywhere in the page content to mark the position you want to put the generated TOC tree to:
 
-<pre><code class="yaml">title: Page Title
+<pre><code class="yaml">---
+title: Page Title
 description: Page description.
 author: Taufik Nurrohman
 type: Markdown
