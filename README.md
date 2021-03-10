@@ -4,6 +4,10 @@ Table of Contents Extension for Mecha
 Release Notes
 -------------
 
+### main
+
+ - [x] [@mecha-cms/mecha#96](https://github.com/mecha-cms/mecha/issues/96)
+
 ### 2.5.1
 
  - Make block example becomes copy-paste friendly.

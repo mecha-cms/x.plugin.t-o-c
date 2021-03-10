@@ -3,7 +3,7 @@ title: Table of Contents
 description: Generate table of contents automatically.
 author: Taufik Nurrohman
 type: Markdown
-version: 2.5.1
+version: 2.5.2
 
 use:
   '.\lot\x\asset': 1
@@ -54,7 +54,7 @@ type: Markdown
 
 First paragraph goes here.
 
-&#x5B;<span>&#x5B;t-o-c title="Custom Title for Table of Contents"&#x5D;</span>&#x5D;
+&#x5B;&#x5B;t-o-c title="Custom Title for Table of Contents"&#x5D;&#x5D;
 
 Second paragraph goes here.
 

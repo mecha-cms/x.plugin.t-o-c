@@ -1,6 +1,6 @@
 <?php
 
-namespace _\lot\x\t_o_c {
+namespace x\TOC {
     function block($content, $fn, $state) {
         $c = \Block::$state;
         $type = $state['type'];
@@ -16,9 +16,9 @@ namespace _\lot\x\t_o_c {
             // `[[t-o-c `
             false === \strpos($content, $open . 't-o-c ')
         ) {
-            return \_\lot\x\t_o_c\content($content, $fn, $state);
+            return \x\TOC\content($content, $fn, $state);
         }
-        return \_\lot\x\t_o_c\content($content, function($type, $out, $content) {
+        return \x\TOC\content($content, function($type, $out, $content) {
             return \Block::alter('t-o-c', function($a, $b) use($out, $type) {
                 return (1 === $type ? \strtr($out, [\P => $b['title'] ?? \i('Table of Contents')]) : "");
             }, $content);
@@ -102,8 +102,8 @@ namespace _\lot\x\t_o_c {
     }
 }
 
-namespace _\lot\x {
-    function t_o_c($content) {
+namespace x {
+    function TOC($content) {
         if (
             // Is error page…
             \State::is('error') ||
@@ -129,13 +129,14 @@ namespace _\lot\x {
             return $content;
         }
         // Add the CSS file only if needed
-        \Asset::set(__DIR__ . \DS . 'lot' . \DS . 'asset' . \DS . 'css' . \DS . 't-o-c.min.css', 20.1);
+        $z = \defined("\\DEBUG") && \DEBUG ? '.' : '.min.';
+        \Asset::set(__DIR__ . \DS . 'lot' . \DS . 'asset' . \DS . 'css' . \DS . 'index' . $z . 'css', 20.1);
         \State::set([
             '[layout]' => ['t-o-c:' . $type => true],
             '[t-o-c]' => (\State::get('[t-o-c]') ?? 0) + 1,
             'has' => ['t-o-c' => true]
         ]);
-        return \call_user_func("\\_\\lot\\x\\t_o_c\\" . (null !== \State::get('x.block') ? 'block' : 'content'), $content, 1, $state);
+        return \call_user_func("\\x\\TOC\\" . (null !== \State::get('x.block') ? 'block' : 'content'), $content, 1, $state);
     }
-    \Hook::set('page.content', __NAMESPACE__ . "\\t_o_c", 10);
+    \Hook::set('page.content', __NAMESPACE__ . "\\TOC", 10);
 }
