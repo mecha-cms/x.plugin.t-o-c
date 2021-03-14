@@ -1,6 +1,6 @@
 <?php
 
-namespace x\TOC {
+namespace x\t_o_c {
     function block($content, $fn, $state) {
         $c = \Block::$state;
         $type = $state['type'];
@@ -16,9 +16,9 @@ namespace x\TOC {
             // `[[t-o-c `
             false === \strpos($content, $open . 't-o-c ')
         ) {
-            return \x\TOC\content($content, $fn, $state);
+            return \x\t_o_c\content($content, $fn, $state);
         }
-        return \x\TOC\content($content, function($type, $out, $content) {
+        return \x\t_o_c\content($content, function($type, $out, $content) {
             return \Block::alter('t-o-c', function($a, $b) use($out, $type) {
                 return (1 === $type ? \strtr($out, [\P => $b['title'] ?? \i('Table of Contents')]) : "");
             }, $content);
@@ -103,7 +103,7 @@ namespace x\TOC {
 }
 
 namespace x {
-    function TOC($content) {
+    function t_o_c($content) {
         if (
             // Is error page…
             \State::is('error') ||
@@ -136,7 +136,7 @@ namespace x {
             '[t-o-c]' => (\State::get('[t-o-c]') ?? 0) + 1,
             'has' => ['t-o-c' => true]
         ]);
-        return \call_user_func("\\x\\TOC\\" . (null !== \State::get('x.block') ? 'block' : 'content'), $content, 1, $state);
+        return \call_user_func("\\x\\t_o_c\\" . (null !== \State::get('x.block') ? 'block' : 'content'), $content, 1, $state);
     }
-    \Hook::set('page.content', __NAMESPACE__ . "\\TOC", 10);
+    \Hook::set('page.content', __NAMESPACE__ . "\\t_o_c", 10);
 }
