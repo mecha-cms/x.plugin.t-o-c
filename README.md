@@ -1,5 +1,5 @@
-Table of Contents Extension for Mecha
-=====================================
+Table of Contents Extension for [Mecha](https://github.com/mecha-cms/mecha)
+===========================================================================
 
 Release Notes
 -------------
