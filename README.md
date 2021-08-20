@@ -3,6 +3,8 @@ Table of Contents Extension for [Mecha](https://github.com/mecha-cms/mecha)
 
 ![Table of Contents](https://user-images.githubusercontent.com/1669261/120205872-aa970f00-c254-11eb-8de7-801ca23c6e08.png)
 
+---
+
 Release Notes
 -------------
 
