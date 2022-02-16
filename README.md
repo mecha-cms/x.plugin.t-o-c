@@ -1,7 +1,11 @@
 Table of Contents Extension for [Mecha](https://github.com/mecha-cms/mecha)
 ===========================================================================
 
+![Code Size](https://img.shields.io/github/languages/code-size/mecha-cms/x.t-o-c?color=%23444&style=for-the-badge)
+
 ![Table of Contents](https://user-images.githubusercontent.com/1669261/120205872-aa970f00-c254-11eb-8de7-801ca23c6e08.png)
+
+This extension lets you build automatic table of contents on the page that has several headers in it so that you can use it to navigate between page headers. If you set the `type` value to `2`, table of contents will not be inserted to the page content, and this extension will only serves as an automatic permanent link ID generator for all header elements in your page content.
 
 ---
 
