@@ -55,7 +55,7 @@ Hook::let('page.content', "x\\t_o_c\\tree");
 
 Then, you can display the table of contents elements like this:
 
-~~~ .php
+~~~ .html.php
 <aside>
   <?php if ($site->is('page') && $content = $page->content): ?>
     <h4>
