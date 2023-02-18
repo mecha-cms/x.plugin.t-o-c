@@ -1,25 +1,28 @@
 ---
 title: Table of Contents
-description: Generate table of contents automatically.
+description: Generates table of contents automatically.
+icon: 'M3,9H17V7H3V9M3,13H17V11H3V13M3,17H17V15H3V17M19,17H21V15H19V17M19,7V9H21V7H19M19,13H21V11H19V13Z'
+color: '#f954ad'
 author: Taufik Nurrohman
 type: Markdown
-version: 2.5.2
+version: 3.0.0
 
 use:
   '.\lot\x\asset': 1
-  '.\lot\x\block': 0
   '.\lot\x\page': 1
 ...
 
-![Table of Contents](https://user-images.githubusercontent.com/1669261/120205872-aa970f00-c254-11eb-8de7-801ca23c6e08.png)
-
-This extension lets you build automatic table of contents on the page that has several headers in it so that you can use it to navigate between page headers. If you set the `type` value to `2`, table of contents will not be inserted to the page content, and this extension will only serves as an automatic permanent link ID generator for all header elements in your page content.
+This extension lets you build automatic table of contents on the page that has several headers in it so that you can use
+it to navigate between page headers. If you set the `type` value to `2`, table of contents will not be inserted to the
+page content, and this extension will only serves as an automatic permanent link ID generator for all header elements in
+your page content.
 
 ### Basic Usage
 
 #### Custom Header ID
 
-You have the full control to determine your own header ID with Markdown Extra syntax or with plain HTML markup. This extension will not overwrite the specific ID that you have specified in the header elements:
+You have the full control to determine your own header ID with Markdown Extra syntax or with plain HTML markup. This
+extension will not overwrite the specific ID that you have specified in the header elements:
 
 ~~~ .markdown
 #### Header Special {#special}
@@ -33,7 +36,8 @@ You have the full control to determine your own header ID with Markdown Extra sy
 
 #### Exclude Headers from TOC
 
-Add `not:t-o-c` class to the desired headers to exclude them from the TOC tree and to disable the automatic permanent link ID creation:
+Add `not:t-o-c` class to the desired headers to exclude them from the TOC tree and to disable the automatic permanent
+link ID creation:
 
 ~~~ .markdown
 #### Example Header {.not:t-o-c}
@@ -45,7 +49,8 @@ Add `not:t-o-c` class to the desired headers to exclude them from the TOC tree a
 
 #### Custom Placement
 
-If you have _Block_ extension installed, you can put <code>&#x5B;&#x5B;t-o-c&#x5D;&#x5D;</code> block anywhere in the page content to mark the position you want to put the generated TOC tree to:
+If you have _Block_ extension installed, you can put <code>&#x5B;&#x5B;t-o-c&#x5D;&#x5D;</code> block anywhere in the
+page content to mark the position you want to put the generated TOC tree to:
 
 <pre><code class="yaml">---
 title: Page Title
@@ -66,7 +71,8 @@ Third paragraph goes here.</code></pre>
 
 There are several ways to disable the automatic table of contents placement.
 
-First way is through the extension configuration, that is, by setting the value of the `type` property to `0` or `false` (alias for `0`). This will disable the table of contents by default:
+First way is through the extension configuration, that is, by setting the value of the `type` property to `0` or `false`
+(alias for `0`). This will disable the table of contents by default:
 
 ~~~ .php
 <?php
@@ -78,7 +84,8 @@ return [
 ];
 ~~~
 
-To re-enable the table of contents, set the value of `t-o-c` property within your page’s `state` property as `1`, `2` or `true` (alias for `1`):
+To re-enable the table of contents, set the value of `t-o-c` property within your page’s `state` property as `1`, `2` or
+`true` (alias for `1`):
 
 ~~~ .yaml
 ---
@@ -91,7 +98,8 @@ state:
 ...
 ~~~
 
-Second way is through the page properties. To disable the automatic table of contents placement on certain page, add a `t-o-c` property within your page’s `state` property with a value that can be evaluated to `false`:
+Second way is through the page properties. To disable the automatic table of contents placement on certain page, add a
+`t-o-c` property within your page’s `state` property with a value that can be evaluated to `false`:
 
 ~~~ .yaml
 ---
