@@ -33,6 +33,7 @@
 <hr>
 <p>Test for custom header elements.</p>
 <p aria-level="1">Not a Title</p>
+<h1 role="text">Not a Title</h1>
 <p>Lorem ipsum dolor sit amet.</p>
 <p aria-level="1" role="heading">Title 1</p>
 <p aria-level="2" role="heading">Title 2</p>

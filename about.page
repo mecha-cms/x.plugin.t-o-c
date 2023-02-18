@@ -3,131 +3,67 @@ title: Table of Contents
 description: Generates table of contents automatically.
 icon: 'M3,9H17V7H3V9M3,13H17V11H3V13M3,17H17V15H3V17M19,17H21V15H19V17M19,7V9H21V7H19M19,13H21V11H19V13Z'
 color: '#f954ad'
+image: /lot/x/t-o-c/index.png
 author: Taufik Nurrohman
 type: Markdown
 version: 3.0.0
 
 use:
-  '.\lot\x\asset': 1
-  '.\lot\x\page': 1
+  '.\lot\x\asset': 0
+  '.\lot\x\page': 0
 ...
 
-This extension lets you build automatic table of contents on the page that has several headers in it so that you can use
-it to navigate between page headers. If you set the `type` value to `2`, table of contents will not be inserted to the
-page content, and this extension will only serves as an automatic permanent link ID generator for all header elements in
-your page content.
+This extension displays a table of contents on top of the page content automatically. It detects the presence of heading
+elements in the page content to form the table of contents.
 
-### Basic Usage
+### Usage
 
-#### Custom Header ID
+You have complete control to determine your own heading ID with Markdown Extra syntax or with plain HTML markup. This
+extension will not overwrite the specific ID that you have specified in the heading elements:
 
-You have the full control to determine your own header ID with Markdown Extra syntax or with plain HTML markup. This
-extension will not overwrite the specific ID that you have specified in the header elements:
-
-~~~ .markdown
-#### Header Special {#special}
+~~~ .md
+### Heading Level 3 {#asdf}
 ~~~
 
 ~~~ .html
-<h3 id="special">Header Special</h3>
-~~~
-
-### Advance Usage
-
-#### Exclude Headers from TOC
-
-Add `not:t-o-c` class to the desired headers to exclude them from the TOC tree and to disable the automatic permanent
-link ID creation:
-
-~~~ .markdown
-#### Example Header {.not:t-o-c}
+<h3 id="asdf">Heading Level 3</h3>
 ~~~
 
 ~~~ .html
-<h3 class="not:t-o-c">Example Header</h3>
+<p aria-level="3" role="heading">Heading Level 3</p>
 ~~~
 
-#### Custom Placement
+Add a `role` attribute with value other than `heading` to the desired heading elements to exclude them from the TOC
+tree. It will also disable the automatic permanent link ID creation:
 
-If you have _Block_ extension installed, you can put <code>&#x5B;&#x5B;t-o-c&#x5D;&#x5D;</code> block anywhere in the
-page content to mark the position you want to put the generated TOC tree to:
+~~~ .md
+### (Not) Heading Level 3 {role='text'}
+~~~
 
-<pre><code class="yaml">---
-title: Page Title
-description: Page description.
-author: Taufik Nurrohman
-type: Markdown
-...
+~~~ .html
+<h3 role="text">(Not) Heading Level 3</h3>
+~~~
 
-First paragraph goes here.
+### Custom Placement
 
-&#x5B;&#x5B;t-o-c title="Custom Title for Table of Contents"&#x5D;&#x5D;
-
-Second paragraph goes here.
-
-Third paragraph goes here.</code></pre>
-
-#### Disable TOC
-
-There are several ways to disable the automatic table of contents placement.
-
-First way is through the extension configuration, that is, by setting the value of the `type` property to `0` or `false`
-(alias for `0`). This will disable the table of contents by default:
+To put the table of contents elements elsewhere (in the layout’s sidebar for example), first you need to remove the
+built-in table of contents hook, so this extension won’t insert the table of contents elements automatically:
 
 ~~~ .php
-<?php
-
-return [
-    'type' => 0,
-    'id' => [ … ],
-    'class' => [ … ]
-];
+Hook::let('page.content', "x\\t_o_c\\tree");
 ~~~
 
-To re-enable the table of contents, set the value of `t-o-c` property within your page’s `state` property as `1`, `2` or
-`true` (alias for `1`):
+Then, you can display the table of contents elements like this:
 
-~~~ .yaml
----
-title: Page Title
-description: Page description.
-author: Taufik Nurrohman
-type: Markdown
-state:
-  t-o-c: true
-...
-~~~
-
-Second way is through the page properties. To disable the automatic table of contents placement on certain page, add a
-`t-o-c` property within your page’s `state` property with a value that can be evaluated to `false`:
-
-~~~ .yaml
----
-title: Page Title
-description: Page description.
-author: Taufik Nurrohman
-type: Markdown
-state:
-  t-o-c: false
-...
-~~~
-
-#### Override TOC Configuration Data
-
-You can rewrite the TOC configuration data on the `t-o-c` property to override the initial configuration data:
-
-~~~ .yaml
----
-title: Page Title
-description: Page description.
-author: Taufik Nurrohman
-type: Markdown
-state:
-  t-o-c:
-    type: 2
-    class:
-    - table-of-contents
-...
+~~~ .php
+<aside>
+  <?php if ($site->is('page') && $content = $page->content): ?>
+    <h4>
+      <?= i('Table of Contents'); ?>
+    </h4>
+    <?= To::TOC($content); ?>
+  <?php endif; ?>
+</aside>
 ~~~
 
  *[TOC]: Table of Contents

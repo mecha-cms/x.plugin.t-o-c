@@ -1,27 +1,36 @@
 <?php
 
-namespace x {
-    function t_o_c($content) {
-        if (!$tree = \x\t_o_c\tree($content)) {
-            return $content;
-        }
+namespace x\t_o_c {
+    function content($content) {
+        \extract($GLOBALS, \EXTR_SKIP);
+        return $state->is('page') ? \x\t_o_c\to\content($content, $state->x->{'t-o-c'}->min ?? 2) : $content;
+    }
+    function tree($content) {
         \extract($GLOBALS, \EXTR_SKIP);
         $c = $state->x->{'t-o-c'};
+        if (!$state->is('page') || (!$tree = \x\t_o_c\to\tree($content, $c->min ?? 2))) {
+            return $content;
+        }
         $id = 't-o-c:' . \substr(\uniqid(), 6);
         return (new \HTML(\Hook::fire('y.t-o-c', [['details', [
-            'title' => ['summary', \i('Table of Contents'), ['id' => $id]],
+            'title' => ['summary', \i('Table of Contents'), [
+                'id' => $id,
+                'role' => 'heading'
+            ]],
             'content' => $tree
         ], [
             'aria-labelledby' => $id,
-            'open' => !isset($c->open) || $c->open,
+            'open' => !isset($c->open) || !empty($c->open),
             'role' => 'doc-toc'
-        ]]]), true)) . \x\t_o_c\content($content);
+        ]]]), true)) . $content;
     }
-    \Hook::set('page.content', __NAMESPACE__ . "\\t_o_c", 2.1);
+    \Hook::set('page.content', __NAMESPACE__ . "\\content", 2.2);
+    \Hook::set('page.content', __NAMESPACE__ . "\\tree", 2.1);
+    \class_exists("\\Asset") && \State::is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
 }
 
-namespace x\t_o_c {
-    function content(?string $content): ?string {
+namespace x\t_o_c\to {
+    function content(?string $content, int $min = 2): ?string {
         if (!$content || (false === \stripos($content, '</h') && false === \stripos(\strtr($content, [
             "'" => "",
             '"' => ""
@@ -29,8 +38,11 @@ namespace x\t_o_c {
             return $content;
         }
         $count = [];
-        $content = \preg_replace_callback('/<(caption|div|figcaption|h[1-6]|p|summary)((?:"[^"]*"|\'[^\']*\'|[^>])*)>([\s\S]*?)<\/\1>/i', static function ($m) use (&$count) {
+        $out = \preg_replace_callback('/<(caption|div|figcaption|h[1-6]|p|summary)(\s(?:"[^"]*"|\'[^\']*\'|[^>])*)?>([\s\S]*?)<\/\1>/i', static function ($m) use (&$count) {
             if ('h' === \strtolower($m[1][0]) && \is_numeric(\substr($m[1], 1))) {
+                if (false !== \stripos($m[2], 'role=') && !\preg_match('/\brole=([\'"]?)heading\1/i', $m[2])) {
+                    return $m[0]; // Skip!
+                }
                 if (false !== \stripos($m[2], 'id=') && \preg_match('/\bid=("[^"]+"|\'[^\']+\'|[^>\s]+)/i', $m[2], $mm)) {
                     $id = $mm[1];
                     if (('"' === $id[0] && '"' === \substr($id[0], -1)) || ("'" === $id[0] && "'" === \substr($id[0], -1))) {
@@ -46,7 +58,7 @@ namespace x\t_o_c {
                 $out['id'] = $id . ($count[$id] > 0 ? '.' . $count[$id] : "");
                 return (string) $out;
             }
-            if (\preg_match('/\baria-level=("\d+"|\'\d+\'|\d+)/i', $m[2], $mm)) {
+            if (false !== \stripos($m[2], 'role=') && \preg_match('/\brole=([\'"]?)heading\1/i', $m[2]) && \preg_match('/\baria-level=("\d+"|\'\d+\'|\d+)/i', $m[2], $mm)) {
                 $level = $mm[1];
                 if (('"' === $level[0] && '"' === \substr($level, -1)) || ("'" === $level[0] && "'" === \substr($level, -1))) {
                     $level = \substr($level, 1, -1);
@@ -68,9 +80,9 @@ namespace x\t_o_c {
             }
             return $m[0];
         }, $content);
-        return $content;
+        return \count($count) >= $min ? $out : $content;
     }
-    function tree(?string $content): ?string {
+    function tree(?string $content, int $min = 2): ?string {
         if (!$content || (false === \stripos($content, '</h') && false === \stripos(\strtr($content, [
             "'" => "",
             '"' => ""
@@ -80,22 +92,21 @@ namespace x\t_o_c {
         $count = [];
         $current = 0;
         $out = "";
-        if (\preg_match_all('/<(caption|div|figcaption|h[1-6]|p|summary)((?:"[^"]*"|\'[^\']*\'|[^>])*)>([\s\S]*?)<\/\1>/i', $content, $m)) {
+        if (\preg_match_all('/<(caption|div|figcaption|h[1-6]|p|summary)(\s(?:"[^"]*"|\'[^\']*\'|[^>])*)?>([\s\S]*?)<\/\1>/i', $content, $m)) {
             foreach ($m[0] as $k => $v) {
                 $level = 0;
                 if ('h' === \strtolower($m[1][$k][0]) && \is_numeric(\substr($m[1][$k], 1))) {
+                    if (false !== \stripos($m[2][$k], 'role=') && !\preg_match('/\brole=([\'"]?)heading\1/i', $m[2][$k])) {
+                        continue; // Skip!
+                    }
                     $level = \substr($m[1][$k], 1);
-                } else if (false === \stripos(\strtr($m[2][$k], [
-                    "'" => "",
-                    '"' => ""
-                ]), 'role=heading')) {
-                    continue;
-                }
-                if (\preg_match('/\baria-level=("\d+"|\'\d+\'|\d+)/i', $m[2][$k], $mm)) {
+                } else if (false !== \stripos($m[2][$k], 'role=') && \preg_match('/\brole=([\'"]?)heading\1/i', $m[2][$k]) && \preg_match('/\baria-level=("\d+"|\'\d+\'|\d+)/i', $m[2][$k], $mm)) {
                     $level = $mm[1];
                     if (('"' === $level[0] && '"' === \substr($level, -1)) || ("'" === $level[0] && "'" === \substr($level, -1))) {
                         $level = \substr($level, 1, -1);
                     }
+                } else {
+                    continue;
                 }
                 if ($m[2][$k] && \preg_match('/\bid=("[^"]+"|\'[^\']+\'|[^>\s]+)/i', $m[2][$k], $mm)) {
                     $id = $mm[1];
@@ -120,7 +131,7 @@ namespace x\t_o_c {
                 } else {
                     $out .= '</li><li>';
                 }
-                $out .= '<a href="#' . $id . ($count[$id] > 0 ? '.' . $count[$id] : "") . '">';
+                $out .= '<a href="' . \To::query($_GET) . '#' . $id . ($count[$id] > 0 ? '.' . $count[$id] : "") . '">';
                 $out .= \w($m[3][$k], ['abbr', 'b', 'br', 'cite', 'code', 'del', 'dfn', 'em', 'i', 'ins', 'kbd', 'mark', 'q', 'span', 'strong', 'sub', 'sup', 'svg', 'time', 'u', 'var']);
                 $out .= '</a>';
                 $current = $level;
@@ -129,7 +140,7 @@ namespace x\t_o_c {
                 $out .= '</li></ol>';
                 $current -= 1;
             }
-            return $out;
+            return \count($count) >= $min && "" !== $out ? $out : null;
         }
         return null;
     }
