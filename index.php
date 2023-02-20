@@ -8,7 +8,7 @@ namespace x\t_o_c {
     function tree($content) {
         \extract($GLOBALS, \EXTR_SKIP);
         $c = $state->x->{'t-o-c'};
-        if (!$state->is('page') || (!$tree = \x\t_o_c\to\tree($content, $c->min ?? 2))) {
+        if (!$state->is('page') || (isset($page->state['t-o-c']) && !$page->state['t-o-c']) || (!$tree = \x\t_o_c\to\tree($content, $c->min ?? 2))) {
             return $content;
         }
         $id = 't-o-c:' . \substr(\uniqid(), 6);
@@ -132,7 +132,7 @@ namespace x\t_o_c\to {
                     $out .= '</li><li>';
                 }
                 $out .= '<a href="' . \To::query($_GET) . '#' . $id . ($count[$id] > 0 ? '.' . $count[$id] : "") . '">';
-                $out .= \w($m[3][$k], ['abbr', 'b', 'br', 'cite', 'code', 'del', 'dfn', 'em', 'i', 'ins', 'kbd', 'mark', 'q', 'span', 'strong', 'sub', 'sup', 'svg', 'time', 'u', 'var']);
+                $out .= \trim(\strip_tags($m[3][$k], ['abbr', 'b', 'br', 'cite', 'code', 'del', 'dfn', 'em', 'i', 'ins', 'kbd', 'mark', 'q', 'span', 'strong', 'sub', 'sup', 'svg', 'time', 'u', 'var']));
                 $out .= '</a>';
                 $current = $level;
             }
