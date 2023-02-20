@@ -44,6 +44,22 @@ tree. It will also disable the automatic permanent link ID creation:
 <h3 role="text">(Not) Heading Level 3</h3>
 ~~~
 
+### Visibility
+
+You can hide the table of contents on a specific page by adding a `t-o-c` property to the page’s `state` property with a
+value that can be evaluated to a boolean `false`:
+
+~~~ .yaml
+---
+title: Page Title
+description: Page description.
+state:
+  t-o-c: false
+...
+
+Page content.
+~~~
+
 ### Placement
 
 To put the table of contents elements elsewhere (in the layout’s sidebar for example), first you need to remove the
@@ -64,22 +80,6 @@ Then, you can display the table of contents elements like this:
     <?= To::TOC($content); ?>
   <?php endif; ?>
 </aside>
-~~~
-
-### Visibility
-
-You can hide the table of contents on a specific page by adding a `t-o-c` property to the page’s `state` property with a
-value that can be evaluated to a boolean `false`:
-
-~~~ .yaml
----
-title: Page Title
-description: Page description.
-state:
-  t-o-c: false
-...
-
-Page content.
 ~~~
 
  *[TOC]: Table of Contents
