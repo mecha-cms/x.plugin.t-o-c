@@ -69,7 +69,7 @@ Then, you can display the table of contents elements like this:
 ### Visibility
 
 You can hide the table of contents on a specific page by adding a `t-o-c` property to the page’s `state` property with a
-value that can be evaluated as a boolean `false`:
+value that can be evaluated to a boolean `false`:
 
 ~~~ .yaml
 ---
