@@ -12,12 +12,13 @@ namespace x\t_o_c {
             return $content;
         }
         $id = 't-o-c:' . \substr(\uniqid(), 6);
+        $tree = new \HTML($tree, true);
         return (new \HTML(\Hook::fire('y.t-o-c', [['details', [
             'title' => ['summary', \i('Table of Contents'), [
                 'id' => $id,
                 'role' => 'heading'
             ]],
-            'content' => $tree
+            'content' => [$tree[0], $tree[1], $tree[2]]
         ], [
             'aria-labelledby' => $id,
             'open' => !isset($c->open) || !empty($c->open),
@@ -59,9 +60,9 @@ namespace x\t_o_c\to {
                 return (string) $out;
             }
             if (false !== \stripos($m[2], 'role=') && \preg_match('/\brole=([\'"]?)heading\1/i', $m[2]) && \preg_match('/\baria-level=("\d+"|\'\d+\'|\d+)/i', $m[2], $mm)) {
-                $level = $mm[1];
-                if (('"' === $level[0] && '"' === \substr($level, -1)) || ("'" === $level[0] && "'" === \substr($level, -1))) {
-                    $level = \substr($level, 1, -1);
+                $next = $mm[1];
+                if (('"' === $next[0] && '"' === \substr($next, -1)) || ("'" === $next[0] && "'" === \substr($next, -1))) {
+                    $next = \substr($next, 1, -1);
                 }
                 if (false !== \stripos($m[2], 'id=') && \preg_match('/\bid=("[^"]+"|\'[^\']+\'|[^>\s]+)/i', $m[2], $mm)) {
                     $id = $mm[1];
@@ -89,25 +90,27 @@ namespace x\t_o_c\to {
         ]), 'role=heading'))) {
             return null;
         }
+        \extract($GLOBALS, \EXTR_SKIP);
         $count = [];
-        $current = 0;
+        $current = $deep = $next = 0;
         $out = "";
+        $query = $url->query;
         if (\preg_match_all('/<(caption|div|figcaption|h[1-6]|p|summary)(\s(?:"[^"]*"|\'[^\']*\'|[^>])*)?>([\s\S]*?)<\/\1>/i', $content, $m)) {
             foreach ($m[0] as $k => $v) {
-                $level = 0;
                 if ('h' === \strtolower($m[1][$k][0]) && \is_numeric(\substr($m[1][$k], 1))) {
                     if (false !== \stripos($m[2][$k], 'role=') && !\preg_match('/\brole=([\'"]?)heading\1/i', $m[2][$k])) {
                         continue; // Skip!
                     }
-                    $level = \substr($m[1][$k], 1);
+                    $next = \substr($m[1][$k], 1);
                 } else if (false !== \stripos($m[2][$k], 'role=') && \preg_match('/\brole=([\'"]?)heading\1/i', $m[2][$k]) && \preg_match('/\baria-level=("\d+"|\'\d+\'|\d+)/i', $m[2][$k], $mm)) {
-                    $level = $mm[1];
-                    if (('"' === $level[0] && '"' === \substr($level, -1)) || ("'" === $level[0] && "'" === \substr($level, -1))) {
-                        $level = \substr($level, 1, -1);
+                    $next = $mm[1];
+                    if (('"' === $next[0] && '"' === \substr($next, -1)) || ("'" === $next[0] && "'" === \substr($next, -1))) {
+                        $next = \substr($next, 1, -1);
                     }
                 } else {
                     continue;
                 }
+                $next = (int) $next;
                 if ($m[2][$k] && \preg_match('/\bid=("[^"]+"|\'[^\']+\'|[^>\s]+)/i', $m[2][$k], $mm)) {
                     $id = $mm[1];
                     if (('"' === $id[0] && '"' === \substr($id[0], -1)) || ("'" === $id[0] && "'" === \substr($id[0], -1))) {
@@ -119,26 +122,26 @@ namespace x\t_o_c\to {
                     $id = 'to:' . \To::kebab(\strip_tags($m[3][$k] ?: \substr(\uniqid(), 6)));
                 }
                 $count[$id] = ($count[$id] ?? -1) + 1;
-                if ($level > $current) {
-                    $out .= '<ol aria-level="' . $level . '" role="doc-pagelist"><li>';
-                } else if ($level < $current) {
-                    for ($i = $level; $i < $current; ++$i) {
+                if ($next > $current) {
+                    $out .= '<ol aria-level="' . $next . '" role="doc-pagelist"><li>';
+                    ++$deep;
+                } else if ($next < $current) {
+                    for ($i = $next; $i < $current; ++$i) {
                         $out .= '</li></ol>';
+                        --$deep;
                     }
                     $out .= '</li><li>';
-                } else if ("" === $out) {
-                    $out .= '<ol aria-level="' . $level . '" role="doc-pagelist"><li>';
                 } else {
                     $out .= '</li><li>';
                 }
-                $out .= '<a href="' . \To::query($_GET) . '#' . $id . ($count[$id] > 0 ? '.' . $count[$id] : "") . '">';
+                $out .= '<a href="' . $query . '#' . $id . ($count[$id] > 0 ? '.' . $count[$id] : "") . '">';
                 $out .= \trim(\strip_tags($m[3][$k], ['abbr', 'b', 'br', 'cite', 'code', 'del', 'dfn', 'em', 'i', 'ins', 'kbd', 'mark', 'q', 'span', 'strong', 'sub', 'sup', 'svg', 'time', 'u', 'var']));
                 $out .= '</a>';
-                $current = $level;
+                $current = $next;
             }
-            while ($current > 0) {
+            while ($deep > 0) {
                 $out .= '</li></ol>';
-                $current -= 1;
+                $deep -= 1;
             }
             return \count($count) >= $min && "" !== $out ? $out : null;
         }
