@@ -46,7 +46,7 @@ tree. It will also disable the automatic permanent link ID creation:
 
 ### Visibility
 
-You can hide the table of contents on a specific page by adding a `t-o-c` property to the page’s `state` property with a
+You can hide the table of contents on a specific page by adding this property to the page’s `state` property with a
 value that can be evaluated to a boolean `false`:
 
 ~~~ .yaml
@@ -54,7 +54,8 @@ value that can be evaluated to a boolean `false`:
 title: Page Title
 description: Page description.
 state:
-  t-o-c: false
+  x:
+    t-o-c: false
 ...
 
 Page content.

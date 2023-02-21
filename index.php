@@ -8,26 +8,35 @@ namespace x\t_o_c {
     function tree($content) {
         \extract($GLOBALS, \EXTR_SKIP);
         $c = $state->x->{'t-o-c'};
-        if (!$state->is('page') || (isset($page->state['t-o-c']) && !$page->state['t-o-c']) || (!$tree = \x\t_o_c\to\tree($content, $c->min ?? 2))) {
+        if (
+            // Skip if not a page…
+            !$state->is('page') ||
+            // Skip if disabled by the extension state…
+            (isset($c->status) && !$c->status && !isset($this->state['x']['t-o-c'])) ||
+            // Skip if disabled by the page state…
+            (isset($this->state['x']['t-o-c']) && !$this->state['x']['t-o-c']) ||
+            // Skip if table of content(s) tree is empty…
+            (!$tree = \x\t_o_c\to\tree($content, $c->min ?? 2))
+        ) {
             return $content;
         }
-        $id = 't-o-c:' . \substr(\uniqid(), 6);
+        $id = $this->id;
         $tree = new \HTML($tree, true);
         return (new \HTML(\Hook::fire('y.t-o-c', [['details', [
             'title' => ['summary', \i('Table of Contents'), [
-                'id' => $id,
+                'id' => 't-o-c:' . $id,
                 'role' => 'heading'
             ]],
             'content' => [$tree[0], $tree[1], $tree[2]]
         ], [
-            'aria-labelledby' => $id,
+            'aria-labelledby' => 't-o-c:' . $id,
             'open' => !isset($c->open) || !empty($c->open),
             'role' => 'doc-toc'
         ]]]), true)) . $content;
     }
-    \Hook::set('page.content', __NAMESPACE__ . "\\content", 2.2);
-    \Hook::set('page.content', __NAMESPACE__ . "\\tree", 2.1);
-    \class_exists("\\Asset") && \State::is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
+    \Hook::set('page.content', __NAMESPACE__ . "\\content", 2.3);
+    \Hook::set('page.content', __NAMESPACE__ . "\\tree", 2.2);
+    \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
 }
 
 namespace x\t_o_c\to {
