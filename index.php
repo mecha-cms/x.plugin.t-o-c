@@ -61,7 +61,7 @@ namespace x\t_o_c\to {
                         $id = \htmlspecialchars_decode($id);
                     }
                 } else {
-                    $id = 'to:' . \To::kebab(\strip_tags($m[3] ?: \substr(\uniqid(), 6)));
+                    $id = 'to:' . \To::kebab(\w($m[3] ?: \substr(\uniqid(), 6)));
                 }
                 $count[$id] = ($count[$id] ?? -1) + 1;
                 $out = new \HTML($m[0]);
@@ -81,7 +81,7 @@ namespace x\t_o_c\to {
                         $id = \htmlspecialchars_decode($id);
                     }
                 } else {
-                    $id = 'to:' . \To::kebab(\strip_tags($m[3] ?: \substr(\uniqid(), 6)));
+                    $id = 'to:' . \To::kebab(\w($m[3] ?: \substr(\uniqid(), 6)));
                 }
                 $count[$id] = ($count[$id] ?? -1) + 1;
                 $out = new \HTML($m[0]);
@@ -128,7 +128,7 @@ namespace x\t_o_c\to {
                         $id = \htmlspecialchars_decode($id);
                     }
                 } else {
-                    $id = 'to:' . \To::kebab(\strip_tags($m[3][$k] ?: \substr(\uniqid(), 6)));
+                    $id = 'to:' . \To::kebab(\w($m[3][$k] ?: \substr(\uniqid(), 6)));
                 }
                 $count[$id] = ($count[$id] ?? -1) + 1;
                 if ($next > $current) {
@@ -144,7 +144,7 @@ namespace x\t_o_c\to {
                     $out .= '</li><li>';
                 }
                 $out .= '<a href="' . $query . '#' . $id . ($count[$id] > 0 ? '.' . $count[$id] : "") . '">';
-                $out .= \trim(\strip_tags($m[3][$k], ['abbr', 'b', 'br', 'cite', 'code', 'del', 'dfn', 'em', 'i', 'ins', 'kbd', 'mark', 'q', 'span', 'strong', 'sub', 'sup', 'svg', 'time', 'u', 'var']));
+                $out .= \trim(\w($m[3][$k], ['abbr', 'b', 'br', 'cite', 'code', 'del', 'dfn', 'em', 'i', 'ins', 'kbd', 'mark', 'q', 'span', 'strong', 'sub', 'sup', 'svg', 'time', 'u', 'var']));
                 $out .= '</a>';
                 $current = $next;
             }
