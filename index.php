@@ -1,6 +1,10 @@
 <?php
 
 namespace x\t_o_c {
+    function asset() {
+        \extract($GLOBALS, \EXTR_SKIP);
+        \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
+    }
     function content($content) {
         \extract($GLOBALS, \EXTR_SKIP);
         return $state->is('page') ? \x\t_o_c\to\content($content, $state->x->{'t-o-c'}->min ?? 2) : $content;
@@ -34,9 +38,9 @@ namespace x\t_o_c {
             'role' => 'doc-toc'
         ]]]), true)) . $content;
     }
+    \Hook::set('content', __NAMESPACE__ . "\\asset", -1);
     \Hook::set('page.content', __NAMESPACE__ . "\\content", 2.3);
     \Hook::set('page.content', __NAMESPACE__ . "\\tree", 2.2);
-    \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
 }
 
 namespace x\t_o_c\to {
@@ -68,11 +72,7 @@ namespace x\t_o_c\to {
                 $out['id'] = $id . ($count[$id] > 0 ? '.' . $count[$id] : "");
                 return (string) $out;
             }
-            if (false !== \stripos($m[2], 'role=') && \preg_match('/\brole=([\'"]?)heading\1/i', $m[2]) && \preg_match('/\baria-level=("\d+"|\'\d+\'|\d+)/i', $m[2], $mm)) {
-                $next = $mm[1];
-                if (('"' === $next[0] && '"' === \substr($next, -1)) || ("'" === $next[0] && "'" === \substr($next, -1))) {
-                    $next = \substr($next, 1, -1);
-                }
+            if (false !== \stripos($m[2], 'role=') && \preg_match('/\brole=([\'"]?)heading\1/i', $m[2]) && \preg_match('/\baria-level=("\d+"|\'\d+\'|\d+)/i', $m[2])) {
                 if (false !== \stripos($m[2], 'id=') && \preg_match('/\bid=("[^"]+"|\'[^\']+\'|[^>\s]+)/i', $m[2], $mm)) {
                     $id = $mm[1];
                     if (('"' === $id[0] && '"' === \substr($id[0], -1)) || ("'" === $id[0] && "'" === \substr($id[0], -1))) {
