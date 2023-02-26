@@ -52,7 +52,7 @@ namespace x\t_o_c\to {
             return $content;
         }
         $count = [];
-        $out = \preg_replace_callback('/<(caption|div|figcaption|h[1-6]|p|summary)(\s(?:"[^"]*"|\'[^\']*\'|[^>])*)?>([\s\S]*?)<\/\1>/i', static function ($m) use (&$count) {
+        $out = \preg_replace_callback('/<(caption|div|dt|figcaption|h[1-6]|p|summary)(\s(?:"[^"]*"|\'[^\']*\'|[^>])*)?>([\s\S]*?)<\/\1>/i', static function ($m) use (&$count) {
             if ('h' === \strtolower($m[1][0]) && \is_numeric(\substr($m[1], 1))) {
                 if (false !== \stripos($m[2], 'role=') && !\preg_match('/\brole=([\'"]?)heading\1/i', $m[2])) {
                     return $m[0]; // Skip!
@@ -104,7 +104,7 @@ namespace x\t_o_c\to {
         $current = $deep = $next = 0;
         $out = "";
         $query = $url->query;
-        if (\preg_match_all('/<(caption|div|figcaption|h[1-6]|p|summary)(\s(?:"[^"]*"|\'[^\']*\'|[^>])*)?>([\s\S]*?)<\/\1>/i', $content, $m)) {
+        if (\preg_match_all('/<(caption|div|dt|figcaption|h[1-6]|p|summary)(\s(?:"[^"]*"|\'[^\']*\'|[^>])*)?>([\s\S]*?)<\/\1>/i', $content, $m)) {
             foreach ($m[0] as $k => $v) {
                 if ('h' === \strtolower($m[1][$k][0]) && \is_numeric(\substr($m[1][$k], 1))) {
                     if (false !== \stripos($m[2][$k], 'role=') && !\preg_match('/\brole=([\'"]?)heading\1/i', $m[2][$k])) {
