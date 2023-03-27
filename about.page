@@ -7,10 +7,6 @@ image: /lot/x/t-o-c/index.png
 author: Taufik Nurrohman
 type: Markdown
 version: 3.0.0
-
-use:
-  '.\lot\x\asset': 0
-  '.\lot\x\page': 0
 ...
 
 This extension displays a table of contents on top of the page content automatically. It detects the presence of heading
