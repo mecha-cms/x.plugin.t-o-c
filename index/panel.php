@@ -17,7 +17,7 @@ if ('GET' === $_SERVER['REQUEST_METHOD']) {
                 'stack' => 40,
                 'title' => '<abbr title="' . i('Table of Contents') . '">' . i('TOC') . '</abbr>',
                 'type' => 'toggle',
-                'value' => (int) ($page->state['x']['t-o-c'] ?? $state->x->{'t-o-c'}->status ?? 0)
+                'value' => (int) ($page->state['x']['t-o-c'] ?? $state->x->{'t-o-c'}->status ?? 1)
             ];
         }
         return $_;
