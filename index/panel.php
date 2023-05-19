@@ -2,24 +2,27 @@
 
 if ('POST' === $_SERVER['REQUEST_METHOD']) {
     if (0 === strpos(($_POST['type'] ?? P) . '/', 'page/page/') && !isset($_POST['page']['state']['x']['t-o-c'])) {
-        // Set default value to `false` if user does not check the toggle
-        $_POST['page']['state']['x']['t-o-c'] = false;
+        // Set value to default if user does not check the toggle
+        $_POST['page']['state']['x']['t-o-c'] = (int) ($state->x->{'t-o-c'}->status ?? 1);
     }
 }
 
 if ('GET' === $_SERVER['REQUEST_METHOD']) {
     Hook::set('_', function ($_) {
-        if (0 === strpos($_['type'] . '/', 'page/page/') && !empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields'])) {
+        extract($GLOBALS, EXTR_SKIP);
+        if (0 === strpos($_['type'] . '/', 'page/page/') && !empty($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension'])) {
             $page = new Page($_['file'] ?: null);
-            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['t-o-c'] = [
-                'hint' => 'Show',
-                'name' => 'page[state][x][t-o-c]',
-                'stack' => 40,
-                'title' => '<abbr title="' . i('Table of Contents') . '">' . i('TOC') . '</abbr>',
-                'type' => 'toggle',
-                'value' => (int) ($page->state['x']['t-o-c'] ?? $state->x->{'t-o-c'}->status ?? 1)
+            $status = (int) ($state->x->{'t-o-c'}->status ?? 1); // The default visibility status
+            if (!isset($_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['values']['t-o-c'])) {
+                // Set default value
+                $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['values']['t-o-c'] = (int) ($page->state['x']['t-o-c'] ?? $status);
+            }
+            // Set option to hide if it is shown by default or show if it is hidden by default
+            $_['lot']['desk']['lot']['form']['lot'][1]['lot']['tabs']['lot']['state']['lot']['fields']['lot']['extension']['lot']['t-o-c'] = [
+                'title' => [(1 === $status ? 'Hide' : 'Show') . ' %s', ['table of contents']],
+                'value' => 1 === $status ? 0 : 1
             ];
         }
         return $_;
-    }, 20);
+    }, 0);
 }
