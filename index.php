@@ -1,6 +1,19 @@
 <?php
 
-namespace x\t_o_c\page\content {
+namespace x\t_o_c {
+    function content() {
+        \extract($GLOBALS, \EXTR_SKIP);
+        \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
+    }
+    function page__content($content) {
+        \extract($GLOBALS, \EXTR_SKIP);
+        return $state->is('page') ? \x\t_o_c\to\content($content, $state->x->{'t-o-c'}->min ?? 2) : $content;
+    }
+    \Hook::set('content', __NAMESPACE__ . "\\content", -1);
+    \Hook::set('page.content', __NAMESPACE__ . "\\page__content", 2.3);
+}
+
+namespace x\t_o_c\page__content {
     function tree($content) {
         \extract($GLOBALS, \EXTR_SKIP);
         $c = $state->x->{'t-o-c'};
@@ -31,14 +44,6 @@ namespace x\t_o_c\page\content {
         ]]]), true)) . $content;
     }
     \Hook::set('page.content', __NAMESPACE__ . "\\tree", 2.2);
-}
-
-namespace x\t_o_c\page {
-    function content($content) {
-        \extract($GLOBALS, \EXTR_SKIP);
-        return $state->is('page') ? \x\t_o_c\to\content($content, $state->x->{'t-o-c'}->min ?? 2) : $content;
-    }
-    \Hook::set('page.content', __NAMESPACE__ . "\\content", 2.3);
 }
 
 namespace x\t_o_c\to {
@@ -154,17 +159,6 @@ namespace x\t_o_c\to {
         }
         return null;
     }
-}
-
-namespace x\t_o_c {
-    function asset() {
-        \extract($GLOBALS, \EXTR_SKIP);
-        \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
-    }
-    \Hook::set('content', __NAMESPACE__ . "\\asset", -1);
-}
-
-namespace {
     if (\defined("\\TEST") && 'x.t-o-c' === \TEST && \is_file($test = __DIR__ . \D . 'test.php')) {
         require $test;
     }
