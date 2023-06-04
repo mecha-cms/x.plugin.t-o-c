@@ -1,5 +1,46 @@
 <?php
 
+namespace x\t_o_c\page\content {
+    function tree($content) {
+        \extract($GLOBALS, \EXTR_SKIP);
+        $c = $state->x->{'t-o-c'};
+        if (
+            // Skip if not a page…
+            !$state->is('page') ||
+            // Skip if disabled by the extension state…
+            (isset($c->status) && !$c->status && !isset($this->state['x']['t-o-c'])) ||
+            // Skip if disabled by the page state…
+            (isset($this->state['x']['t-o-c']) && !$this->state['x']['t-o-c']) ||
+            // Skip if table of content(s) tree is empty…
+            (!$tree = \x\t_o_c\to\tree($content, $c->min ?? 2))
+        ) {
+            return $content;
+        }
+        $id = $this->id;
+        $tree = new \HTML($tree, true);
+        return (new \HTML(\Hook::fire('y.t-o-c', [['details', [
+            'title' => ['summary', \i('Table of Contents'), [
+                'id' => 't-o-c:' . $id,
+                'role' => 'heading'
+            ]],
+            'content' => [$tree[0], $tree[1], $tree[2]]
+        ], [
+            'aria-labelledby' => 't-o-c:' . $id,
+            'open' => !isset($c->open) || !empty($c->open),
+            'role' => 'doc-toc'
+        ]]]), true)) . $content;
+    }
+    \Hook::set('page.content', __NAMESPACE__ . "\\tree", 2.2);
+}
+
+namespace x\t_o_c\page {
+    function content($content) {
+        \extract($GLOBALS, \EXTR_SKIP);
+        return $state->is('page') ? \x\t_o_c\to\content($content, $state->x->{'t-o-c'}->min ?? 2) : $content;
+    }
+    \Hook::set('page.content', __NAMESPACE__ . "\\content", 2.3);
+}
+
 namespace x\t_o_c\to {
     function content(?string $content, int $min = 2): ?string {
         if (!$content || (false === \stripos($content, '</h') && false === \stripos(\strtr($content, [
@@ -120,42 +161,7 @@ namespace x\t_o_c {
         \extract($GLOBALS, \EXTR_SKIP);
         \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
     }
-    function content($content) {
-        \extract($GLOBALS, \EXTR_SKIP);
-        return $state->is('page') ? \x\t_o_c\to\content($content, $state->x->{'t-o-c'}->min ?? 2) : $content;
-    }
-    function tree($content) {
-        \extract($GLOBALS, \EXTR_SKIP);
-        $c = $state->x->{'t-o-c'};
-        if (
-            // Skip if not a page…
-            !$state->is('page') ||
-            // Skip if disabled by the extension state…
-            (isset($c->status) && !$c->status && !isset($this->state['x']['t-o-c'])) ||
-            // Skip if disabled by the page state…
-            (isset($this->state['x']['t-o-c']) && !$this->state['x']['t-o-c']) ||
-            // Skip if table of content(s) tree is empty…
-            (!$tree = \x\t_o_c\to\tree($content, $c->min ?? 2))
-        ) {
-            return $content;
-        }
-        $id = $this->id;
-        $tree = new \HTML($tree, true);
-        return (new \HTML(\Hook::fire('y.t-o-c', [['details', [
-            'title' => ['summary', \i('Table of Contents'), [
-                'id' => 't-o-c:' . $id,
-                'role' => 'heading'
-            ]],
-            'content' => [$tree[0], $tree[1], $tree[2]]
-        ], [
-            'aria-labelledby' => 't-o-c:' . $id,
-            'open' => !isset($c->open) || !empty($c->open),
-            'role' => 'doc-toc'
-        ]]]), true)) . $content;
-    }
     \Hook::set('content', __NAMESPACE__ . "\\asset", -1);
-    \Hook::set('page.content', __NAMESPACE__ . "\\content", 2.3);
-    \Hook::set('page.content', __NAMESPACE__ . "\\tree", 2.2);
 }
 
 namespace {
