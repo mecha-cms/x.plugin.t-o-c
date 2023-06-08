@@ -9,14 +9,14 @@ type: Markdown
 version: 3.0.0
 ...
 
-This extension displays a table of contents on top of the page content automatically. It detects the presence of heading
+This extension automatically displays a table of contents on top of the page content. It detects the presence of heading
 elements in the page content to form the table of contents. If you just need the jump link feature without a table of
 contents, you might be more interested in the [Anchor](https://github.com/mecha-cms/x.anchor) extension.
 
 ### Usage
 
-You have complete control to determine your own heading ID with Markdown Extra syntax or with plain HTML markup. This
-extension will not overwrite the specific ID that you have specified in the heading elements:
+You have complete control to specify your own heading ID using Markdown Extra syntax or plain HTML markup. This
+extension will not overwrite the specific ID you specify in the heading elements:
 
 ~~~ .md
 ### Heading Level 3 {#asdf}
@@ -30,8 +30,8 @@ extension will not overwrite the specific ID that you have specified in the head
 <p aria-level="3" role="heading">Heading Level 3</p>
 ~~~
 
-Add a `role` attribute with value other than `heading` to the desired heading elements to exclude them from the TOC
-tree. It will also disable the automatic permanent link ID creation:
+Add a `role` attribute with a value other than `heading` to the desired heading elements to exclude them from the table
+of contents tree. This will also disable the automatic creation of permanent link IDs:
 
 ~~~ .md
 ### (Not) Heading Level 3 {role='text'}
@@ -43,8 +43,8 @@ tree. It will also disable the automatic permanent link ID creation:
 
 ### Visibility
 
-You can hide the table of contents on a specific page by adding this property to the page’s `state` property with a
-value that can be evaluated to a boolean `false`:
+You can hide the table of contents on a particular page by adding this property to the `state` property of the page with
+a value that can be evaluated as a boolean `false`:
 
 ~~~ .yaml
 ---
@@ -60,14 +60,15 @@ Page content.
 
 ### Placement
 
-To put the table of contents elements elsewhere (in the layout’s sidebar for example), first you need to remove the
-built-in table of contents hook, so this extension won’t insert the table of contents elements automatically:
+To place the table of contents elements in a different location (for example, in the sidebar of the layout), you first
+need to remove the built-in table of contents hook so that this extension won’t automatically insert the table of
+contents elements:
 
 ~~~ .php
-Hook::let('page.content', "x\\t_o_c\\tree");
+Hook::let('page.content', "x\\t_o_c\\page__content\\tree");
 ~~~
 
-Then, you can display the table of contents elements like this:
+Then you can display the table of contents elements as follows:
 
 ~~~ .html.php
 <aside>

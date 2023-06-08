@@ -1,7 +1,7 @@
 <?php
 
 namespace x\t_o_c {
-    function content() {
+    function get() {
         \extract($GLOBALS, \EXTR_SKIP);
         \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
     }
@@ -9,7 +9,7 @@ namespace x\t_o_c {
         \extract($GLOBALS, \EXTR_SKIP);
         return $state->is('page') ? \x\t_o_c\to\content($content, $state->x->{'t-o-c'}->min ?? 2) : $content;
     }
-    \Hook::set('content', __NAMESPACE__ . "\\content", -1);
+    \Hook::set('get', __NAMESPACE__ . "\\get", -1);
     \Hook::set('page.content', __NAMESPACE__ . "\\page__content", 2.3);
 }
 
