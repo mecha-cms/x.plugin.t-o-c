@@ -16,7 +16,8 @@
   position: relative;
 }
 [role=doc-toc] [role=doc-pagelist] li::after {
-  border-top: 1px solid;
+  border: 0 solid;
+  border-top-width: 1px;
   bottom: 0;
   content: "";
   display: block;
@@ -26,7 +27,8 @@
   width: 1em;
 }
 [role=doc-toc] [role=doc-pagelist] li::before {
-  border-left: 1px solid;
+  border: 0 solid;
+  border-left-width: 1px;
   bottom: 0;
   content: "";
   display: block;
