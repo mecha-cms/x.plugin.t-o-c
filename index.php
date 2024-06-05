@@ -1,21 +1,21 @@
 <?php
 
 namespace x\t_o_c {
-    function get() {
-        \extract($GLOBALS, \EXTR_SKIP);
-        \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
-    }
     function page__content($content) {
-        \extract($GLOBALS, \EXTR_SKIP);
+        \extract(\lot(), \EXTR_SKIP);
         return $state->is('page') ? \x\t_o_c\to\content($content, $state->x->{'t-o-c'}->min ?? 2) : $content;
     }
-    \Hook::set('get', __NAMESPACE__ . "\\get", -1);
+    function route__page() {
+        \extract(\lot());
+        \class_exists("\\Asset") && $state->is('page') && \Asset::set(__DIR__ . \D . 'index' . (\defined("\\TEST") && \TEST ? '.' : '.min.') . 'css', 10);
+    }
     \Hook::set('page.content', __NAMESPACE__ . "\\page__content", 2.3);
+    \Hook::set('route.page', __NAMESPACE__ . "\\route__page", -1);
 }
 
 namespace x\t_o_c\page__content {
     function tree($content) {
-        \extract($GLOBALS, \EXTR_SKIP);
+        \extract(\lot(), \EXTR_SKIP);
         $c = $state->x->{'t-o-c'};
         if (
             // Skip if not a page…
@@ -102,7 +102,7 @@ namespace x\t_o_c\to {
         ]), 'role=heading'))) {
             return null;
         }
-        \extract($GLOBALS, \EXTR_SKIP);
+        \extract(\lot(), \EXTR_SKIP);
         $count = [];
         $current = $deep = $next = 0;
         $out = "";
